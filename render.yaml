@@ -2,12 +2,13 @@ services:
   - type: web
     name: synctunes
     env: node
-    plan: starter
-    buildCommand: npm install && npm run build
+    buildCommand: |
+      apt-get update && apt-get install -y yt-dlp python3
+      npm install --include=dev
+      npm run build
     startCommand: npm start
     envVars:
       - key: NODE_ENV
         value: production
       - key: PORT
         value: 10000
-    healthCheckPath: /api/health
