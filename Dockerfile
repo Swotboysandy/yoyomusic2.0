@@ -1,17 +1,22 @@
-# Use Node.js 18 base image
+# Use Node.js 18 base image with Debian Bullseye
 FROM node:18-bullseye
 
-# Install system dependencies needed for yt-dlp
-RUN apt-get update && apt-get install -y yt-dlp ffmpeg
+# Install system dependencies: ffmpeg, python3, pip3
+RUN apt-get update && apt-get install -y ffmpeg python3 python3-pip
+
+# Install yt-dlp using pip
+RUN pip3 install yt-dlp
 
 # Set working directory
 WORKDIR /usr/src/app
 
-# Copy package.json files and install dependencies
+# Copy package.json and package-lock.json (if exists)
 COPY package*.json ./
+
+# Install npm dependencies
 RUN npm install
 
-# Copy the rest of the source code
+# Copy all source files
 COPY . .
 
 # Build the project
@@ -20,5 +25,5 @@ RUN npm run build
 # Expose the port your app listens on
 EXPOSE 5000
 
-# Run the production server
+# Start the production server
 CMD ["npm", "start"]
