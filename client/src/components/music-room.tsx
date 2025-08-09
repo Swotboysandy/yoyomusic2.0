@@ -221,7 +221,7 @@ export default function MusicRoom({ roomId, currentUser, socket }: MusicRoomProp
 
   return (
     <>
-      <div className="grid lg:grid-cols-2 gap-8 pb-36">
+      <div className="grid lg:grid-cols-2 gap-8 pb-20">
         {/* Left Panel */}
         <div className="space-y-6">
           <QueuePanel queue={queue} />
@@ -247,7 +247,7 @@ export default function MusicRoom({ roomId, currentUser, socket }: MusicRoomProp
       </div>
       
       {/* Bottom Docked Player */}
-      <div className="fixed bottom-0 left-0 right-0 bg-slate-900/95 backdrop-blur-xl border-t border-slate-700/50 p-4 z-50 shadow-2xl">
+      <div className="fixed bottom-0 left-0 right-0 bg-slate-900/95 backdrop-blur-xl border-t border-slate-700/50 px-4 py-2 z-50 shadow-2xl">
         <div className="max-w-7xl mx-auto">
           <AudioPlayer
             currentSong={currentSong}

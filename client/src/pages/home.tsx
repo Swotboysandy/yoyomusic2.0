@@ -13,12 +13,21 @@ export default function Home() {
   const { socket, isConnected } = useWebSocket();
 
   useEffect(() => {
-    // Generate a temporary user for demo purposes
-    if (!currentUser) {
-      setCurrentUser({
-        id: Math.random().toString(36).substring(2, 15),
-        username: `User${Math.floor(Math.random() * 1000)}`
-      });
+    // Check if user already exists in localStorage
+    const savedUser = localStorage.getItem('musicAppUser');
+    if (savedUser && !currentUser) {
+      setCurrentUser(JSON.parse(savedUser));
+    } else if (!currentUser && !savedUser) {
+      // Show username input if no user exists
+      const username = prompt('Enter your username:');
+      if (username && username.trim()) {
+        const user = {
+          id: Math.random().toString(36).substring(2, 15),
+          username: username.trim()
+        };
+        setCurrentUser(user);
+        localStorage.setItem('musicAppUser', JSON.stringify(user));
+      }
     }
   }, [currentUser]);
 
@@ -60,20 +69,22 @@ export default function Home() {
                 <div className={`w-2 h-2 rounded-full ${isConnected ? 'bg-orange-400 animate-pulse shadow-orange-400/50 shadow-lg' : 'bg-gray-500'}`}></div>
                 <span className="text-sm font-medium text-slate-200">{currentUser.username}</span>
               </div>
-              <Button
-                onClick={() => setLocation('/')}
-                variant="outline"
-                className="text-white border-slate-600 hover:bg-red-500/20 hover:border-red-500"
-              >
-                <i className="fas fa-sign-out-alt mr-2"></i>
-                Exit Room
-              </Button>
+              {currentView === 'room' && (
+                <Button
+                  onClick={() => setLocation('/')}
+                  variant="outline"
+                  className="text-white border-slate-600 hover:bg-red-500/20 hover:border-red-500"
+                >
+                  <i className="fas fa-sign-out-alt mr-2"></i>
+                  Exit Room
+                </Button>
+              )}
             </div>
           </div>
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pb-36">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pb-20">
         {currentView === 'selection' ? (
           <RoomSelection currentUser={currentUser} socket={socket} />
         ) : roomId ? (
