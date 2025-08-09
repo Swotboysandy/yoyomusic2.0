@@ -1,0 +1,588 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SyncTunes - Collaborative Music Rooms</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1DB954',
+                        secondary: '#7C3AED',
+                        dark: {
+                            100: '#2A2A2A',
+                            200: '#1A1A1A',
+                            300: '#0F0F0F'
+                        }
+                    },
+                    fontFamily: {
+                        'inter': ['Inter', 'system-ui', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-dark-300 text-white font-inter overflow-x-hidden">
+    <!-- @COMPONENT: AppContainer -->
+    <div class="min-h-screen bg-gradient-to-br from-dark-300 via-dark-200 to-dark-300">
+        
+        <!-- @COMPONENT: Navigation Header -->
+        <header class="bg-dark-200/80 backdrop-blur-xl border-b border-gray-800/50 sticky top-0 z-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-16">
+                    <div class="flex items-center space-x-4">
+                        <div class="flex items-center space-x-2">
+                            <div class="w-8 h-8 bg-gradient-to-r from-primary to-secondary rounded-lg flex items-center justify-center">
+                                <i class="fas fa-music text-white text-sm"></i>
+                            </div>
+                            <h1 class="text-xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                                SyncTunes
+                            </h1>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center space-x-4">
+                        <!-- User Status -->
+                        <div class="flex items-center space-x-2" data-bind="user.info">
+                            <div class="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
+                            <span class="text-sm text-gray-300" data-mock="true">Alex Johnson</span>
+                        </div>
+                        
+                        <!-- Settings Button -->
+                        <button class="p-2 text-gray-400 hover:text-white hover:bg-gray-800/50 rounded-lg transition-all duration-200" data-event="click:openSettings">
+                            <i class="fas fa-cog"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- @COMPONENT: MainContent -->
+        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            
+            <!-- @COMPONENT: RoomSelection (Initial State) -->
+            <div id="roomSelection" class="space-y-8">
+                <div class="text-center">
+                    <h2 class="text-3xl font-bold mb-4">Choose Your Music Room</h2>
+                    <p class="text-gray-400 max-w-2xl mx-auto">
+                        Join an existing room or create a new one to start sharing music with friends in real-time.
+                    </p>
+                </div>
+
+                <!-- Create Room Section -->
+                <div class="bg-gradient-to-r from-dark-200 to-dark-100 rounded-2xl p-8 border border-gray-800/50">
+                    <h3 class="text-xl font-semibold mb-6 flex items-center">
+                        <i class="fas fa-plus-circle text-primary mr-3"></i>
+                        Create New Room
+                    </h3>
+                    
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">Room Name</label>
+                            <input type="text" placeholder="My Awesome Music Room" 
+                                   class="w-full px-4 py-3 bg-dark-300 border border-gray-700 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200"
+                                   data-mock="true">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">Password (Optional)</label>
+                            <input type="password" placeholder="Enter password" 
+                                   class="w-full px-4 py-3 bg-dark-300 border border-gray-700 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200"
+                                   data-mock="true">
+                        </div>
+                    </div>
+                    
+                    <button class="mt-6 bg-gradient-to-r from-primary to-secondary hover:from-primary/80 hover:to-secondary/80 text-white px-8 py-3 rounded-xl font-medium transition-all duration-200 transform hover:scale-105"
+                            data-event="click:createRoom">
+                        <i class="fas fa-door-open mr-2"></i>
+                        Create Room
+                    </button>
+                </div>
+
+                <!-- Available Rooms -->
+                <div class="space-y-6">
+                    <h3 class="text-xl font-semibold">Available Rooms</h3>
+                    
+                    <!-- @MAP: rooms.map(room => ( -->
+                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Room Card 1 -->
+                        <div class="group bg-gradient-to-br from-dark-200 to-dark-100 rounded-2xl p-6 border border-gray-800/50 hover:border-primary/30 transition-all duration-300 cursor-pointer transform hover:-translate-y-1"
+                             data-event="click:joinRoom" data-mock="true">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="w-12 h-12 bg-gradient-to-r from-primary to-secondary rounded-xl flex items-center justify-center text-xl font-bold">
+                                    01
+                                </div>
+                                <div class="flex items-center space-x-1">
+                                    <div class="w-2 h-2 bg-primary rounded-full"></div>
+                                    <span class="text-xs text-gray-400">3 users</span>
+                                </div>
+                            </div>
+                            <h4 class="font-semibold text-lg mb-2">Chill Vibes Only</h4>
+                            <p class="text-gray-400 text-sm mb-4">Currently playing: "Lofi Hip Hop Mix"</p>
+                            <div class="flex items-center justify-between">
+                                <div class="flex -space-x-2">
+                                    <div class="w-6 h-6 bg-blue-500 rounded-full border-2 border-dark-200"></div>
+                                    <div class="w-6 h-6 bg-green-500 rounded-full border-2 border-dark-200"></div>
+                                    <div class="w-6 h-6 bg-purple-500 rounded-full border-2 border-dark-200"></div>
+                                </div>
+                                <i class="fas fa-lock text-gray-600"></i>
+                            </div>
+                        </div>
+
+                        <!-- Room Card 2 -->
+                        <div class="group bg-gradient-to-br from-dark-200 to-dark-100 rounded-2xl p-6 border border-gray-800/50 hover:border-primary/30 transition-all duration-300 cursor-pointer transform hover:-translate-y-1"
+                             data-event="click:joinRoom" data-mock="true">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="w-12 h-12 bg-gradient-to-r from-secondary to-pink-500 rounded-xl flex items-center justify-center text-xl font-bold">
+                                    02
+                                </div>
+                                <div class="flex items-center space-x-1">
+                                    <div class="w-2 h-2 bg-primary rounded-full"></div>
+                                    <span class="text-xs text-gray-400">7 users</span>
+                                </div>
+                            </div>
+                            <h4 class="font-semibold text-lg mb-2">Rock Classics</h4>
+                            <p class="text-gray-400 text-sm mb-4">Currently playing: "Bohemian Rhapsody"</p>
+                            <div class="flex items-center justify-between">
+                                <div class="flex -space-x-2">
+                                    <div class="w-6 h-6 bg-red-500 rounded-full border-2 border-dark-200"></div>
+                                    <div class="w-6 h-6 bg-yellow-500 rounded-full border-2 border-dark-200"></div>
+                                    <div class="w-6 h-6 bg-indigo-500 rounded-full border-2 border-dark-200"></div>
+                                    <div class="w-6 h-6 bg-pink-500 rounded-full border-2 border-dark-200 flex items-center justify-center text-xs">+3</div>
+                                </div>
+                                <i class="fas fa-unlock text-primary"></i>
+                            </div>
+                        </div>
+
+                        <!-- Room Card 3 -->
+                        <div class="group bg-gradient-to-br from-dark-200 to-dark-100 rounded-2xl p-6 border border-gray-800/50 hover:border-primary/30 transition-all duration-300 cursor-pointer transform hover:-translate-y-1"
+                             data-event="click:joinRoom" data-mock="true">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="w-12 h-12 bg-gradient-to-r from-orange-500 to-red-500 rounded-xl flex items-center justify-center text-xl font-bold">
+                                    03
+                                </div>
+                                <div class="flex items-center space-x-1">
+                                    <div class="w-2 h-2 bg-gray-500 rounded-full"></div>
+                                    <span class="text-xs text-gray-400">Empty</span>
+                                </div>
+                            </div>
+                            <h4 class="font-semibold text-lg mb-2">Study Session</h4>
+                            <p class="text-gray-400 text-sm mb-4">No music playing</p>
+                            <div class="flex items-center justify-between">
+                                <div class="text-gray-500 text-sm">Ready to jam</div>
+                                <i class="fas fa-unlock text-primary"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- @END_MAP )) -->
+                </div>
+            </div>
+
+            <!-- @COMPONENT: MusicRoom (Active State) -->
+            <div id="musicRoom" class="hidden space-y-6">
+                <div class="grid lg:grid-cols-3 gap-6">
+                    
+                    <!-- @COMPONENT: MainMusicPlayer -->
+                    <div class="lg:col-span-2 space-y-6">
+                        
+                        <!-- Now Playing Section -->
+                        <div class="bg-gradient-to-br from-dark-200 to-dark-100 rounded-2xl p-8 border border-gray-800/50">
+                            <div class="flex items-center justify-between mb-6">
+                                <h3 class="text-xl font-semibold">Now Playing</h3>
+                                <div class="flex items-center space-x-2" data-bind="room.users">
+                                    <i class="fas fa-users text-gray-400"></i>
+                                    <span class="text-sm text-gray-400" data-mock="true">7 listeners</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Current Song Display -->
+                            <div class="flex items-center space-x-4 mb-6" data-bind="currentSong">
+                                <!-- Album Art placeholder -->
+                                <div class="w-20 h-20 bg-gradient-to-br from-primary to-secondary rounded-xl flex items-center justify-center">
+                                    <i class="fas fa-music text-2xl text-white"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <h4 class="font-semibold text-lg" data-mock="true">Bohemian Rhapsody</h4>
+                                    <p class="text-gray-400" data-mock="true">Queen</p>
+                                    <div class="flex items-center space-x-2 mt-1">
+                                        <span class="text-xs text-gray-500" data-mock="true">Added by Sarah M.</span>
+                                        <div class="w-1 h-1 bg-gray-500 rounded-full"></div>
+                                        <span class="text-xs text-gray-500" data-mock="true">5:55</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Audio Controls -->
+                            <div class="space-y-4">
+                                <!-- Progress Bar -->
+                                <div class="space-y-2">
+                                    <div class="flex justify-between text-xs text-gray-400">
+                                        <span data-bind="currentTime" data-mock="true">2:34</span>
+                                        <span data-bind="totalTime" data-mock="true">5:55</span>
+                                    </div>
+                                    <div class="relative">
+                                        <div class="w-full h-2 bg-gray-700 rounded-full">
+                                            <div class="h-2 bg-gradient-to-r from-primary to-secondary rounded-full" 
+                                                 style="width: 43%" data-bind="progress"></div>
+                                        </div>
+                                        <div class="absolute top-0 w-4 h-4 bg-white rounded-full shadow-lg transform -translate-y-1 cursor-pointer"
+                                             style="left: 43%" data-event="drag:seekAudio"></div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Control Buttons -->
+                                <div class="flex items-center justify-center space-x-6">
+                                    <button class="p-3 text-gray-400 hover:text-white transition-colors" data-event="click:previousSong">
+                                        <i class="fas fa-step-backward text-xl"></i>
+                                    </button>
+                                    
+                                    <button class="p-4 bg-gradient-to-r from-primary to-secondary rounded-full text-white hover:from-primary/80 hover:to-secondary/80 transition-all duration-200 transform hover:scale-105"
+                                            data-event="click:togglePlayPause" data-bind="isPlaying">
+                                        <i class="fas fa-pause text-xl" data-mock="true"></i>
+                                    </button>
+                                    
+                                    <button class="p-3 text-gray-400 hover:text-white transition-colors" data-event="click:nextSong">
+                                        <i class="fas fa-step-forward text-xl"></i>
+                                    </button>
+                                    
+                                    <button class="p-3 text-gray-400 hover:text-red-400 transition-colors" data-event="click:voteSkip">
+                                        <i class="fas fa-forward text-xl"></i>
+                                        <span class="text-xs ml-1" data-bind="skipVotes" data-mock="true">2/4</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Search & Add Music -->
+                        <div class="bg-gradient-to-br from-dark-200 to-dark-100 rounded-2xl p-6 border border-gray-800/50">
+                            <h3 class="text-lg font-semibold mb-4">Add Music</h3>
+                            
+                            <div class="flex space-x-3 mb-4">
+                                <input type="text" placeholder="Search for songs, artists, or albums..." 
+                                       class="flex-1 px-4 py-3 bg-dark-300 border border-gray-700 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200"
+                                       data-event="input:searchMusic" data-mock="true">
+                                <button class="px-6 py-3 bg-gradient-to-r from-primary to-secondary text-white rounded-xl hover:from-primary/80 hover:to-secondary/80 transition-all duration-200"
+                                        data-event="click:performSearch">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                            
+                            <!-- Search Results -->
+                            <div class="space-y-2" data-bind="searchResults">
+                                <!-- @MAP: searchResults.map(result => ( -->
+                                <div class="flex items-center justify-between p-3 bg-dark-300/50 rounded-lg hover:bg-dark-300 transition-colors cursor-pointer"
+                                     data-event="click:addToQueue" data-mock="true">
+                                    <div class="flex items-center space-x-3">
+                                        <div class="w-10 h-10 bg-gradient-to-br from-gray-600 to-gray-700 rounded-lg flex items-center justify-center">
+                                            <i class="fas fa-play text-xs text-gray-300"></i>
+                                        </div>
+                                        <div>
+                                            <p class="font-medium">Imagine Dragons - Thunder</p>
+                                            <p class="text-sm text-gray-400">3:24</p>
+                                        </div>
+                                    </div>
+                                    <button class="p-2 text-gray-400 hover:text-primary transition-colors">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                </div>
+                                <!-- @END_MAP )) -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- @COMPONENT: SidebarContent -->
+                    <div class="space-y-6">
+                        
+                        <!-- Queue -->
+                        <div class="bg-gradient-to-br from-dark-200 to-dark-100 rounded-2xl p-6 border border-gray-800/50">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-lg font-semibold">Queue</h3>
+                                <span class="text-sm text-gray-400" data-bind="queue.length" data-mock="true">5 songs</span>
+                            </div>
+                            
+                            <div class="space-y-3 max-h-80 overflow-y-auto" data-bind="queue">
+                                <!-- @MAP: queue.map(song => ( -->
+                                <div class="flex items-center space-x-3 p-3 bg-dark-300/30 rounded-lg" data-mock="true">
+                                    <div class="w-8 h-8 bg-gradient-to-br from-gray-600 to-gray-700 rounded-lg flex items-center justify-center">
+                                        <i class="fas fa-music text-xs text-gray-300"></i>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <p class="font-medium text-sm truncate">Hotel California</p>
+                                        <p class="text-xs text-gray-400">Eagles</p>
+                                    </div>
+                                    <span class="text-xs text-gray-500">6:30</span>
+                                </div>
+                                <!-- @END_MAP )) -->
+                            </div>
+                        </div>
+                        
+                        <!-- Chat -->
+                        <div class="bg-gradient-to-br from-dark-200 to-dark-100 rounded-2xl p-6 border border-gray-800/50">
+                            <h3 class="text-lg font-semibold mb-4">Room Chat</h3>
+                            
+                            <!-- Chat Messages -->
+                            <div class="space-y-3 max-h-60 overflow-y-auto mb-4" data-bind="chatMessages">
+                                <!-- @MAP: messages.map(message => ( -->
+                                <div class="space-y-2" data-mock="true">
+                                    <div class="flex items-start space-x-2">
+                                        <div class="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center text-xs font-bold">A</div>
+                                        <div class="flex-1">
+                                            <p class="text-sm"><span class="font-medium text-blue-400">Alex</span>: Great song choice! 🎵</p>
+                                            <p class="text-xs text-gray-500">2:34 PM</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start space-x-2">
+                                        <div class="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center text-xs font-bold">S</div>
+                                        <div class="flex-1">
+                                            <p class="text-sm"><span class="font-medium text-green-400">Sarah</span>: Thanks! Queen is the best</p>
+                                            <p class="text-xs text-gray-500">2:35 PM</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- @END_MAP )) -->
+                            </div>
+                            
+                            <!-- Typing Indicator -->
+                            <div class="text-xs text-gray-500 mb-2" data-bind="typingUsers" data-mock="true">
+                                <i class="fas fa-circle text-primary animate-pulse"></i>
+                                Mike is typing...
+                            </div>
+                            
+                            <!-- Chat Input -->
+                            <div class="flex space-x-2">
+                                <input type="text" placeholder="Type a message..." 
+                                       class="flex-1 px-3 py-2 bg-dark-300 border border-gray-700 rounded-lg focus:ring-1 focus:ring-primary focus:border-transparent transition-all duration-200 text-sm"
+                                       data-event="input:handleTyping" data-mock="true">
+                                <button class="p-2 bg-primary text-white rounded-lg hover:bg-primary/80 transition-colors"
+                                        data-event="click:sendMessage">
+                                    <i class="fas fa-paper-plane text-sm"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Users -->
+                        <div class="bg-gradient-to-br from-dark-200 to-dark-100 rounded-2xl p-6 border border-gray-800/50">
+                            <h3 class="text-lg font-semibold mb-4">Listeners</h3>
+                            
+                            <div class="space-y-3" data-bind="roomUsers">
+                                <!-- @MAP: users.map(user => ( -->
+                                <div class="flex items-center justify-between" data-mock="true">
+                                    <div class="flex items-center space-x-3">
+                                        <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-sm font-bold">A</div>
+                                        <div>
+                                            <p class="font-medium text-sm">Alex Johnson</p>
+                                            <div class="flex items-center space-x-1">
+                                                <div class="w-2 h-2 bg-primary rounded-full"></div>
+                                                <span class="text-xs text-gray-400">Online</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center space-x-1 text-xs text-gray-500">
+                                        <i class="fas fa-search"></i>
+                                        <span>Searching</span>
+                                    </div>
+                                </div>
+                                <!-- @END_MAP )) -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <!-- @COMPONENT: PasswordModal -->
+        <div id="passwordModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
+            <div class="bg-gradient-to-br from-dark-200 to-dark-100 rounded-2xl p-8 max-w-md w-full border border-gray-800/50">
+                <h3 class="text-xl font-semibold mb-4">Room Password Required</h3>
+                <p class="text-gray-400 mb-6">This room is password protected. Please enter the password to join.</p>
+                
+                <div class="space-y-4">
+                    <input type="password" placeholder="Enter room password" 
+                           class="w-full px-4 py-3 bg-dark-300 border border-gray-700 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200"
+                           data-mock="true">
+                    
+                    <div class="flex space-x-3">
+                        <button class="flex-1 px-4 py-3 bg-gray-700 text-white rounded-xl hover:bg-gray-600 transition-colors"
+                                data-event="click:cancelJoin">
+                            Cancel
+                        </button>
+                        <button class="flex-1 px-4 py-3 bg-gradient-to-r from-primary to-secondary text-white rounded-xl hover:from-primary/80 hover:to-secondary/80 transition-all duration-200"
+                                data-event="click:joinWithPassword">
+                            Join Room
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- @COMPONENT: StatusNotifications -->
+        <div id="statusNotifications" class="fixed top-20 right-4 space-y-2 z-40">
+            <!-- @MAP: notifications.map(notification => ( -->
+            <div class="bg-dark-200/90 backdrop-blur-xl border border-gray-800/50 rounded-xl p-4 max-w-sm transform translate-x-full animate-slide-in" data-mock="true">
+                <div class="flex items-center space-x-3">
+                    <div class="w-8 h-8 bg-primary/20 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-user-plus text-primary text-sm"></i>
+                    </div>
+                    <div>
+                        <p class="font-medium text-sm">Sarah joined the room</p>
+                        <p class="text-xs text-gray-400">Just now</p>
+                    </div>
+                </div>
+            </div>
+            <!-- @END_MAP )) -->
+        </div>
+    </div>
+    <!-- @END_COMPONENT: AppContainer -->
+
+    <script>
+        (function() {
+            // @STATE: currentView:string = 'roomSelection'
+            // @STATE: currentUser:object = null
+            // @STATE: currentRoom:object = null
+            // @STATE: isPlaying:boolean = false
+            // @STATE: currentSong:object = null
+            // @STATE: queue:array = []
+            // @STATE: searchResults:array = []
+            
+            // TODO: Implement WebSocket connection for real-time updates
+            // TODO: Implement YouTube search functionality using yt-dlp backend
+            // TODO: Implement audio playback controls
+            // TODO: Implement room management (create, join, leave)
+            // TODO: Implement chat functionality with typing indicators
+            // TODO: Implement voting system for song skipping
+            // TODO: Implement user presence and activity tracking
+            
+            // Mock data for demonstration
+            const mockRooms = [
+                { id: 1, name: "Chill Vibes Only", users: 3, currentSong: "Lofi Hip Hop Mix", hasPassword: true },
+                { id: 2, name: "Rock Classics", users: 7, currentSong: "Bohemian Rhapsody", hasPassword: false },
+                { id: 3, name: "Study Session", users: 0, currentSong: null, hasPassword: false }
+            ];
+            
+            const mockSearchResults = [
+                { id: "1", title: "Imagine Dragons - Thunder", duration: "3:24" },
+                { id: "2", title: "Ed Sheeran - Shape of You", duration: "3:53" },
+                { id: "3", title: "Billie Eilish - Bad Guy", duration: "3:14" }
+            ];
+            
+            // @FUNCTIONALITY: Room selection and navigation
+            function initializeRoomSelection() {
+                // Handle room card clicks
+                document.querySelectorAll('[data-event*="joinRoom"]').forEach(card => {
+                    card.addEventListener('click', function() {
+                        // Check if room requires password
+                        const roomHasPassword = this.querySelector('.fa-lock');
+                        if (roomHasPassword) {
+                            showPasswordModal();
+                        } else {
+                            joinRoom();
+                        }
+                    });
+                });
+            }
+            
+            // @FUNCTIONALITY: Password modal management
+            function showPasswordModal() {
+                document.getElementById('passwordModal').classList.remove('hidden');
+            }
+            
+            function hidePasswordModal() {
+                document.getElementById('passwordModal').classList.add('hidden');
+            }
+            
+            // @FUNCTIONALITY: Room joining and switching views
+            function joinRoom() {
+                document.getElementById('roomSelection').classList.add('hidden');
+                document.getElementById('musicRoom').classList.remove('hidden');
+                hidePasswordModal();
+            }
+            
+            // @FUNCTIONALITY: Audio controls simulation
+            function togglePlayPause() {
+                const button = document.querySelector('[data-event*="togglePlayPause"]');
+                const icon = button.querySelector('i');
+                
+                if (icon.classList.contains('fa-pause')) {
+                    icon.classList.remove('fa-pause');
+                    icon.classList.add('fa-play');
+                } else {
+                    icon.classList.remove('fa-play');
+                    icon.classList.add('fa-pause');
+                }
+            }
+            
+            // @FUNCTIONALITY: Search functionality
+            function handleSearch() {
+                const searchInput = document.querySelector('[data-event*="searchMusic"]');
+                const searchButton = document.querySelector('[data-event*="performSearch"]');
+                
+                searchButton.addEventListener('click', function() {
+                    // Simulate search loading state
+                    this.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+                    
+                    setTimeout(() => {
+                        this.innerHTML = '<i class="fas fa-search"></i>';
+                        // Update search results would happen here
+                    }, 1000);
+                });
+            }
+            
+            // @FUNCTIONALITY: Initialize all interactive elements
+            function initializeApp() {
+                initializeRoomSelection();
+                handleSearch();
+                
+                // Modal close handlers
+                document.querySelector('[data-event*="cancelJoin"]')?.addEventListener('click', hidePasswordModal);
+                document.querySelector('[data-event*="joinWithPassword"]')?.addEventListener('click', joinRoom);
+                
+                // Audio control handlers
+                document.querySelector('[data-event*="togglePlayPause"]')?.addEventListener('click', togglePlayPause);
+                
+                // Create room handler
+                document.querySelector('[data-event*="createRoom"]')?.addEventListener('click', function() {
+                    // Simulate room creation
+                    joinRoom();
+                });
+            }
+            
+            // Initialize when DOM is loaded
+            document.addEventListener('DOMContentLoaded', initializeApp);
+        })();
+    </script>
+
+    <style>
+        @keyframes slide-in {
+            from { transform: translateX(100%); }
+            to { transform: translateX(0); }
+        }
+        
+        .animate-slide-in {
+            animation: slide-in 0.3s ease-out forwards;
+        }
+        
+        /* Custom scrollbar styling for dark theme */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #1a1a1a;
+            border-radius: 3px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #4a5568;
+            border-radius: 3px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #1DB954;
+        }
+    </style>
+</body>
+</html>

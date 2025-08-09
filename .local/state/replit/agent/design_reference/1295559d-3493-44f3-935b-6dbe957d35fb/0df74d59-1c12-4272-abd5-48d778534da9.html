@@ -1,0 +1,545 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PetBudget - Pet Expense Tracker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#4F46E5',
+                        secondary: '#F59E0B',
+                        accent: '#EC4899',
+                        success: '#10B981',
+                        warning: '#F59E0B',
+                        error: '#EF4444'
+                    },
+                    fontFamily: {
+                        'sans': ['Inter', 'system-ui', 'sans-serif']
+                    }
+                }
+            }
+        };
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50 font-sans">
+
+    <!-- @COMPONENT: Header -->
+    <header class="bg-white shadow-sm border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center">
+                        <i class="fas fa-paw text-primary text-2xl mr-3"></i>
+                        <h1 class="text-xl font-bold text-gray-900">PetBudget</h1>
+                    </div>
+                </div>
+                <nav class="hidden md:flex space-x-8">
+                    <a href="#dashboard" class="text-primary font-medium">Dashboard</a>
+                    <a href="#expenses" class="text-gray-500 hover:text-gray-700">Expenses</a>
+                    <a href="#split-bills" class="text-gray-500 hover:text-gray-700">Split Bills</a>
+                    <a href="#reports" class="text-gray-500 hover:text-gray-700">Reports</a>
+                </nav>
+                <div class="flex items-center">
+                    <button class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors">
+                        <i class="fas fa-plus mr-2"></i>Add Expense
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- @END_COMPONENT: Header -->
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <!-- @COMPONENT: MainContent -->
+            <div class="lg:col-span-2 space-y-8">
+                
+                <!-- @COMPONENT: QuickStats -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+                        <div class="flex items-center">
+                            <div class="p-2 bg-blue-100 rounded-lg">
+                                <i class="fas fa-dollar-sign text-primary"></i>
+                            </div>
+                            <div class="ml-4">
+                                <p class="text-sm font-medium text-gray-600">This Month</p>
+                                <p class="text-2xl font-bold text-gray-900" data-bind="monthlyTotal">$342.50</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+                        <div class="flex items-center">
+                            <div class="p-2 bg-green-100 rounded-lg">
+                                <i class="fas fa-chart-line text-success"></i>
+                            </div>
+                            <div class="ml-4">
+                                <p class="text-sm font-medium text-gray-600">Avg/Month</p>
+                                <p class="text-2xl font-bold text-gray-900" data-bind="avgMonthly">$298.75</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+                        <div class="flex items-center">
+                            <div class="p-2 bg-amber-100 rounded-lg">
+                                <i class="fas fa-users text-secondary"></i>
+                            </div>
+                            <div class="ml-4">
+                                <p class="text-sm font-medium text-gray-600">Your Share</p>
+                                <p class="text-2xl font-bold text-gray-900" data-bind="yourShare">$171.25</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- @END_COMPONENT: QuickStats -->
+
+                <!-- @COMPONENT: AddExpenseForm -->
+                <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+                    <h2 class="text-lg font-semibold text-gray-900 mb-6">Add New Expense</h2>
+                    <form class="space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Pet</label>
+                                <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" data-mock="true">
+                                    <option>Select a pet</option>
+                                    <option>Buddy (Dog)</option>
+                                    <option>Whiskers (Cat)</option>
+                                    <option>Charlie (Rabbit)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Category</label>
+                                <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" data-mock="true">
+                                    <option>Select category</option>
+                                    <option>🍽️ Food</option>
+                                    <option>🏥 Veterinary</option>
+                                    <option>🧸 Toys & Accessories</option>
+                                    <option>🧼 Grooming</option>
+                                    <option>🏠 Boarding</option>
+                                    <option>💊 Medication</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Amount</label>
+                                <div class="relative">
+                                    <span class="absolute left-3 top-2 text-gray-500">$</span>
+                                    <input type="number" placeholder="0.00" class="w-full pl-8 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" data-mock="true">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Date</label>
+                                <input type="date" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" data-mock="true">
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                            <input type="text" placeholder="Premium dog food, monthly supply" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" data-mock="true">
+                        </div>
+                        
+                        <div class="flex items-center">
+                            <input type="checkbox" id="split-expense" class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded" data-mock="true">
+                            <label for="split-expense" class="ml-2 text-sm text-gray-700">Split with roommates</label>
+                        </div>
+                        
+                        <button type="submit" class="w-full md:w-auto bg-primary text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition-colors" data-event="click:handleAddExpense">
+                            <i class="fas fa-plus mr-2"></i>Add Expense
+                        </button>
+                    </form>
+                </div>
+                <!-- @END_COMPONENT: AddExpenseForm -->
+
+                <!-- @COMPONENT: RecentExpenses -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200">
+                    <div class="p-6 border-b border-gray-200">
+                        <div class="flex justify-between items-center">
+                            <h2 class="text-lg font-semibold text-gray-900">Recent Expenses</h2>
+                            <button class="text-primary hover:text-indigo-700 text-sm font-medium">View All</button>
+                        </div>
+                    </div>
+                    
+                    <!-- @MAP: recentExpenses.map(expense => ( -->
+                    <div class="p-6 space-y-4">
+                        <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg" data-mock="true">
+                            <div class="flex items-center">
+                                <div class="p-2 bg-blue-100 rounded-lg mr-4">
+                                    <span class="text-lg">🍽️</span>
+                                </div>
+                                <div>
+                                    <p class="font-medium text-gray-900" data-bind="expense.description">Premium Dog Food</p>
+                                    <p class="text-sm text-gray-500">Buddy • <span data-bind="expense.date">Nov 15, 2024</span></p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <p class="font-semibold text-gray-900" data-bind="expense.amount">$45.99</p>
+                                <p class="text-sm text-gray-500">Your share: <span data-bind="expense.yourShare">$22.99</span></p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg" data-mock="true">
+                            <div class="flex items-center">
+                                <div class="p-2 bg-red-100 rounded-lg mr-4">
+                                    <span class="text-lg">🏥</span>
+                                </div>
+                                <div>
+                                    <p class="font-medium text-gray-900">Veterinary Checkup</p>
+                                    <p class="text-sm text-gray-500">Whiskers • Nov 12, 2024</p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <p class="font-semibold text-gray-900">$120.00</p>
+                                <p class="text-sm text-gray-500">Your share: $120.00</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg" data-mock="true">
+                            <div class="flex items-center">
+                                <div class="p-2 bg-purple-100 rounded-lg mr-4">
+                                    <span class="text-lg">🧸</span>
+                                </div>
+                                <div>
+                                    <p class="font-medium text-gray-900">New Chew Toys</p>
+                                    <p class="text-sm text-gray-500">Buddy • Nov 10, 2024</p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <p class="font-semibold text-gray-900">$18.50</p>
+                                <p class="text-sm text-gray-500">Your share: $9.25</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- @END_MAP )) -->
+                </div>
+                <!-- @END_COMPONENT: RecentExpenses -->
+
+                <!-- @COMPONENT: BillSplitting -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200">
+                    <div class="p-6 border-b border-gray-200">
+                        <h2 class="text-lg font-semibold text-gray-900">Bill Splitting</h2>
+                        <p class="text-sm text-gray-600 mt-1">Manage shared expenses with your roommates</p>
+                    </div>
+                    
+                    <div class="p-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <h3 class="font-medium text-gray-900 mb-3">Current Split Ratios</h3>
+                                <div class="space-y-3">
+                                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg" data-mock="true">
+                                        <div class="flex items-center">
+                                            <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white text-sm font-medium mr-3">
+                                                <span data-bind="user.initial">A</span>
+                                            </div>
+                                            <span class="font-medium text-gray-900" data-bind="user.name">Alex (You)</span>
+                                        </div>
+                                        <span class="font-semibold text-primary" data-bind="user.splitRatio">50%</span>
+                                    </div>
+                                    
+                                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg" data-mock="true">
+                                        <div class="flex items-center">
+                                            <div class="w-8 h-8 bg-secondary rounded-full flex items-center justify-center text-white text-sm font-medium mr-3">
+                                                <span>S</span>
+                                            </div>
+                                            <span class="font-medium text-gray-900">Sarah</span>
+                                        </div>
+                                        <span class="font-semibold text-secondary">30%</span>
+                                    </div>
+                                    
+                                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg" data-mock="true">
+                                        <div class="flex items-center">
+                                            <div class="w-8 h-8 bg-accent rounded-full flex items-center justify-center text-white text-sm font-medium mr-3">
+                                                <span>M</span>
+                                            </div>
+                                            <span class="font-medium text-gray-900">Mike</span>
+                                        </div>
+                                        <span class="font-semibold text-accent">20%</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <h3 class="font-medium text-gray-900 mb-3">Pending Settlements</h3>
+                                <div class="space-y-3">
+                                    <div class="p-3 bg-green-50 border border-green-200 rounded-lg" data-mock="true">
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-sm text-green-800">Sarah owes you</span>
+                                            <span class="font-semibold text-green-900" data-bind="settlement.amount">$24.75</span>
+                                        </div>
+                                        <p class="text-xs text-green-600 mt-1">Dog food & vet bills</p>
+                                    </div>
+                                    
+                                    <div class="p-3 bg-blue-50 border border-blue-200 rounded-lg" data-mock="true">
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-sm text-blue-800">You owe Mike</span>
+                                            <span class="font-semibold text-blue-900">$12.30</span>
+                                        </div>
+                                        <p class="text-xs text-blue-600 mt-1">Shared grooming costs</p>
+                                    </div>
+                                </div>
+                                
+                                <button class="w-full mt-4 bg-success text-white py-2 px-4 rounded-lg hover:bg-green-600 transition-colors text-sm font-medium" data-event="click:handleSettlement">
+                                    <i class="fas fa-money-bill-wave mr-2"></i>Send Settlement Request
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- @END_COMPONENT: BillSplitting -->
+            </div>
+            <!-- @END_COMPONENT: MainContent -->
+
+            <!-- @COMPONENT: Sidebar -->
+            <div class="space-y-8">
+                
+                <!-- @COMPONENT: AIRecommendations -->
+                <div class="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl shadow-sm border border-purple-200">
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="p-2 bg-purple-100 rounded-lg mr-3">
+                                <i class="fas fa-robot text-purple-600"></i>
+                            </div>
+                            <h2 class="text-lg font-semibold text-gray-900">AI Insights</h2>
+                        </div>
+                        
+                        <!-- @STATE: isLoadingRecommendations:boolean = false -->
+                        <div class="space-y-4" data-mock="true">
+                            <div class="p-4 bg-white rounded-lg border border-purple-200">
+                                <div class="flex items-start">
+                                    <i class="fas fa-lightbulb text-secondary mr-3 mt-1"></i>
+                                    <div>
+                                        <h3 class="font-medium text-gray-900 text-sm">Budget Optimization</h3>
+                                        <p class="text-xs text-gray-600 mt-1">You're spending 23% more on food than similar pet owners. Consider buying in bulk or switching to a subscription service.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="p-4 bg-white rounded-lg border border-purple-200">
+                                <div class="flex items-start">
+                                    <i class="fas fa-heart text-red-400 mr-3 mt-1"></i>
+                                    <div>
+                                        <h3 class="font-medium text-gray-900 text-sm">Health Reminder</h3>
+                                        <p class="text-xs text-gray-600 mt-1">Buddy's annual checkup is due in 2 weeks. Budget approximately $150-200 for the visit.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="p-4 bg-white rounded-lg border border-purple-200">
+                                <div class="flex items-start">
+                                    <i class="fas fa-chart-trend-up text-success mr-3 mt-1"></i>
+                                    <div>
+                                        <h3 class="font-medium text-gray-900 text-sm">Spending Trend</h3>
+                                        <p class="text-xs text-gray-600 mt-1">Great job! You've reduced monthly expenses by 12% compared to last quarter.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <button class="w-full mt-4 bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 transition-colors text-sm font-medium" data-event="click:generateNewRecommendations">
+                            <i class="fas fa-refresh mr-2"></i>Get New Insights
+                        </button>
+                        <!-- @FUNCTIONALITY: This should call OpenAI API to generate personalized recommendations -->
+                    </div>
+                </div>
+                <!-- @END_COMPONENT: AIRecommendations -->
+
+                <!-- @COMPONENT: ExpenseBreakdown -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200">
+                    <div class="p-6 border-b border-gray-200">
+                        <h2 class="text-lg font-semibold text-gray-900">Expense Breakdown</h2>
+                        <p class="text-sm text-gray-600">This month by category</p>
+                    </div>
+                    
+                    <div class="p-6">
+                        <div class="space-y-4" data-mock="true">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <div class="w-3 h-3 bg-blue-500 rounded-full mr-3"></div>
+                                    <span class="text-sm text-gray-700">Food</span>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-sm font-medium text-gray-900" data-bind="category.amount">$156.50</p>
+                                    <p class="text-xs text-gray-500" data-bind="category.percentage">45.7%</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <div class="w-3 h-3 bg-red-500 rounded-full mr-3"></div>
+                                    <span class="text-sm text-gray-700">Veterinary</span>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-sm font-medium text-gray-900">$120.00</p>
+                                    <p class="text-xs text-gray-500">35.0%</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <div class="w-3 h-3 bg-purple-500 rounded-full mr-3"></div>
+                                    <span class="text-sm text-gray-700">Toys</span>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-sm font-medium text-gray-900">$38.50</p>
+                                    <p class="text-xs text-gray-500">11.2%</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <div class="w-3 h-3 bg-green-500 rounded-full mr-3"></div>
+                                    <span class="text-sm text-gray-700">Grooming</span>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-sm font-medium text-gray-900">$27.50</p>
+                                    <p class="text-xs text-gray-500">8.1%</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- @END_COMPONENT: ExpenseBreakdown -->
+
+                <!-- @COMPONENT: PetProfiles -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200">
+                    <div class="p-6 border-b border-gray-200">
+                        <h2 class="text-lg font-semibold text-gray-900">Your Pets</h2>
+                    </div>
+                    
+                    <div class="p-6 space-y-4" data-mock="true">
+                        <div class="flex items-center p-3 bg-blue-50 rounded-lg">
+                            <div class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-semibold mr-3">
+                                🐕
+                            </div>
+                            <div class="flex-1">
+                                <p class="font-medium text-gray-900" data-bind="pet.name">Buddy</p>
+                                <p class="text-sm text-gray-600">Golden Retriever • 3 years</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-sm font-medium text-gray-900" data-bind="pet.monthlyExpense">$189.20</p>
+                                <p class="text-xs text-gray-500">This month</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center p-3 bg-purple-50 rounded-lg">
+                            <div class="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center text-white font-semibold mr-3">
+                                🐱
+                            </div>
+                            <div class="flex-1">
+                                <p class="font-medium text-gray-900">Whiskers</p>
+                                <p class="text-sm text-gray-600">Persian Cat • 5 years</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-sm font-medium text-gray-900">$153.30</p>
+                                <p class="text-xs text-gray-500">This month</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- @END_COMPONENT: PetProfiles -->
+
+                <!-- @COMPONENT: QuickActions -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200">
+                    <div class="p-6 border-b border-gray-200">
+                        <h2 class="text-lg font-semibold text-gray-900">Quick Actions</h2>
+                    </div>
+                    
+                    <div class="p-6 space-y-3">
+                        <button class="w-full text-left p-3 rounded-lg hover:bg-gray-50 transition-colors" data-event="click:generateReport">
+                            <div class="flex items-center">
+                                <i class="fas fa-file-pdf text-red-500 mr-3"></i>
+                                <span class="text-sm font-medium text-gray-700">Export Monthly Report</span>
+                            </div>
+                        </button>
+                        
+                        <button class="w-full text-left p-3 rounded-lg hover:bg-gray-50 transition-colors" data-event="click:setReminders">
+                            <div class="flex items-center">
+                                <i class="fas fa-bell text-secondary mr-3"></i>
+                                <span class="text-sm font-medium text-gray-700">Set Expense Reminders</span>
+                            </div>
+                        </button>
+                        
+                        <button class="w-full text-left p-3 rounded-lg hover:bg-gray-50 transition-colors" data-event="click:manageBudgets">
+                            <div class="flex items-center">
+                                <i class="fas fa-piggy-bank text-success mr-3"></i>
+                                <span class="text-sm font-medium text-gray-700">Manage Budgets</span>
+                            </div>
+                        </button>
+                        
+                        <button class="w-full text-left p-3 rounded-lg hover:bg-gray-50 transition-colors" data-event="click:inviteRoommate">
+                            <div class="flex items-center">
+                                <i class="fas fa-user-plus text-primary mr-3"></i>
+                                <span class="text-sm font-medium text-gray-700">Invite Roommate</span>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+                <!-- @END_COMPONENT: QuickActions -->
+            </div>
+            <!-- @END_COMPONENT: Sidebar -->
+        </div>
+    </div>
+
+    <!-- @COMPONENT: LoadingStates -->
+    <div id="loading-overlay" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-xl p-8 max-w-sm mx-4 text-center">
+            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+            <p class="text-gray-700 font-medium">Generating AI recommendations...</p>
+            <p class="text-sm text-gray-500 mt-2">This may take a few seconds</p>
+        </div>
+    </div>
+    <!-- @END_COMPONENT: LoadingStates -->
+
+    <script>
+        // TODO: Implement business logic, API calls, and state management
+        (function() {
+            // Scoped JavaScript for basic interactions
+            
+            // Form validation example
+            const addExpenseForm = document.querySelector('form');
+            if (addExpenseForm) {
+                addExpenseForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    // TODO: Add form validation and submission logic
+                    console.log('Form submitted - implement validation and API call');
+                });
+            }
+            
+            // Loading state example for AI recommendations
+            const aiRefreshButton = document.querySelector('[data-event="click:generateNewRecommendations"]');
+            const loadingOverlay = document.getElementById('loading-overlay');
+            
+            if (aiRefreshButton && loadingOverlay) {
+                aiRefreshButton.addEventListener('click', function() {
+                    loadingOverlay.classList.remove('hidden');
+                    
+                    // Simulate API call delay
+                    setTimeout(() => {
+                        loadingOverlay.classList.add('hidden');
+                        // TODO: Replace with actual OpenAI API integration
+                        console.log('AI recommendations updated');
+                    }, 3000);
+                });
+            }
+            
+            // Mobile menu toggle (if needed)
+            const mobileMenuButton = document.querySelector('[data-mobile-menu-toggle]');
+            if (mobileMenuButton) {
+                mobileMenuButton.addEventListener('click', function() {
+                    // TODO: Implement mobile menu toggle
+                    console.log('Mobile menu toggled');
+                });
+            }
+        })();
+    </script>
+
+</body>
+</html>
