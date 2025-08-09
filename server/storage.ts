@@ -93,7 +93,7 @@ export class MemStorage implements IStorage {
     const newRoom: Room = {
       id,
       name: room.name,
-      password: room.password,
+      password: room.password || null,
       createdBy: room.createdBy,
       createdAt: new Date(),
       currentSong: null,

@@ -29,7 +29,7 @@ export default function RoomSelection({ currentUser, socket }: RoomSelectionProp
   const [showPasswordModal, setShowPasswordModal] = useState(false);
   const { toast } = useToast();
 
-  const { data: rooms = [], isLoading } = useQuery({
+  const { data: rooms = [], isLoading } = useQuery<Room[]>({
     queryKey: ['/api/rooms'],
   });
 
@@ -167,7 +167,7 @@ export default function RoomSelection({ currentUser, socket }: RoomSelectionProp
           <div className="text-center text-gray-400">No rooms available. Create one to get started!</div>
         ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {rooms.map((room: Room, index: number) => (
+            {rooms.map((room, index: number) => (
               <Card
                 key={room.id}
                 className="group bg-gradient-to-br from-dark-200 to-dark-100 border-gray-800/50 hover:border-primary/30 transition-all duration-300 cursor-pointer transform hover:-translate-y-1"

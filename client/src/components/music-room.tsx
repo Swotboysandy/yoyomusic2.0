@@ -25,6 +25,7 @@ interface RoomUser {
   id: string;
   userId: string;
   isTyping: boolean;
+  lastActivity: string;
   user?: { username: string };
 }
 
