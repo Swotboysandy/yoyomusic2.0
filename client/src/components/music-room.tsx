@@ -11,6 +11,8 @@ interface Song {
   duration: number;
   addedBy: string;
   videoId: string;
+  thumbnail?: string;
+  channel?: string;
 }
 
 interface QueueItem {
@@ -161,7 +163,9 @@ export default function MusicRoom({ roomId, currentUser, socket }: MusicRoomProp
       data: {
         videoId: song.videoId,
         title: song.title,
-        duration: song.duration
+        duration: song.duration,
+        thumbnail: song.thumbnail,
+        channel: song.channel
       }
     }));
   };
@@ -204,6 +208,17 @@ export default function MusicRoom({ roomId, currentUser, socket }: MusicRoomProp
     }));
   };
 
+  const handleTimeUpdate = (time: number) => {
+    setCurrentTime(time);
+  };
+
+  const handleSongEnded = () => {
+    if (!socket) return;
+    socket.send(JSON.stringify({
+      type: 'song_ended'
+    }));
+  };
+
   return (
     <div className="grid lg:grid-cols-3 gap-6">
       {/* Main Music Player */}
@@ -217,6 +232,8 @@ export default function MusicRoom({ roomId, currentUser, socket }: MusicRoomProp
           onPlayPause={handlePlayPause}
           onVoteSkip={handleVoteSkip}
           onSeek={handleSeek}
+          onTimeUpdate={handleTimeUpdate}
+          onSongEnded={handleSongEnded}
         />
         
         <SearchPanel

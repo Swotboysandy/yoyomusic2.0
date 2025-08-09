@@ -63,6 +63,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
           case 'typing':
             await handleTyping(ws, data);
             break;
+          case 'song_ended':
+            await handleSongEnded(ws, data);
+            break;
         }
       } catch (error) {
         console.error('WebSocket message error:', error);
@@ -159,14 +162,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
   async function handleAddToQueue(ws: ExtendedWebSocket, data: WebSocketMessage) {
     if (!ws.roomId || !ws.userId) return;
 
-    const { videoId, title, duration } = data.data;
+    const { videoId, title, duration, thumbnail, channel } = data.data;
     
     const queueItem = await storage.addToQueue({
       roomId: ws.roomId,
       videoId,
       title,
       duration,
-      addedBy: ws.userId
+      addedBy: ws.userId,
+      thumbnail,
+      channel
     });
 
     const queue = await storage.getQueueByRoom(ws.roomId);
@@ -318,7 +323,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
         title: nextSong.title,
         duration: nextSong.duration,
         addedBy: nextSong.addedBy,
-        videoId: nextSong.videoId
+        videoId: nextSong.videoId,
+        thumbnail: nextSong.thumbnail,
+        channel: nextSong.channel
       },
       isPlaying: true,
       currentTime: 0
@@ -389,7 +396,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
               id: data.id,
               title: data.title,
               duration: data.duration || 0,
-              videoId: data.id
+              videoId: data.id,
+              thumbnail: data.thumbnails && data.thumbnails.length > 0 ? data.thumbnails[0].url : null,
+              channel: data.channel || data.uploader || 'Unknown'
             };
           });
           resolve(results);

@@ -4,6 +4,8 @@ interface QueueItem {
   title: string;
   duration: number;
   addedBy: string;
+  thumbnail?: string;
+  channel?: string;
 }
 
 interface QueuePanelProps {
@@ -37,14 +39,25 @@ export default function QueuePanel({ queue }: QueuePanelProps) {
               <div className="w-6 h-6 bg-gray-600 rounded text-xs flex items-center justify-center text-gray-300 font-medium">
                 {index + 1}
               </div>
-              <div className="w-8 h-8 bg-gradient-to-br from-gray-600 to-gray-700 rounded-lg flex items-center justify-center">
-                <i className="fas fa-music text-xs text-gray-300"></i>
+              <div className="w-10 h-10 rounded-lg overflow-hidden bg-gray-600 flex items-center justify-center">
+                {song.thumbnail ? (
+                  <img 
+                    src={song.thumbnail} 
+                    alt={song.title}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <i className="fas fa-music text-sm text-gray-300"></i>
+                )}
               </div>
               <div className="flex-1 min-w-0">
-                <p className="font-medium text-sm truncate text-white">{song.title}</p>
-                <p className="text-xs text-gray-400">Duration: {formatDuration(song.duration)}</p>
+                <p className="font-medium text-sm line-clamp-1 text-white">{song.title}</p>
+                <div className="flex items-center space-x-2 mt-1">
+                  <p className="text-xs text-gray-400 line-clamp-1">{song.channel || 'Unknown'}</p>
+                  <div className="w-1 h-1 bg-gray-500 rounded-full"></div>
+                  <p className="text-xs text-gray-400">{formatDuration(song.duration)}</p>
+                </div>
               </div>
-              <span className="text-xs text-gray-500">{formatDuration(song.duration)}</span>
             </div>
           ))
         )}

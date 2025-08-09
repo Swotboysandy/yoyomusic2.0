@@ -21,6 +21,8 @@ export const rooms = pgTable("rooms", {
     duration: number;
     addedBy: string;
     videoId: string;
+    thumbnail?: string;
+    channel?: string;
   }>(),
   isPlaying: boolean("is_playing").default(false),
   currentTime: integer("current_time").default(0),
@@ -35,6 +37,8 @@ export const queueItems = pgTable("queue_items", {
   addedBy: varchar("added_by").references(() => users.id).notNull(),
   addedAt: timestamp("added_at").defaultNow(),
   position: integer("position").notNull(),
+  thumbnail: text("thumbnail"),
+  channel: text("channel"),
 });
 
 export const roomUsers = pgTable("room_users", {

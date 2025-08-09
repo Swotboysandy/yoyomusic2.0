@@ -7,6 +7,8 @@ interface SearchResult {
   title: string;
   duration: number;
   videoId: string;
+  thumbnail?: string;
+  channel?: string;
 }
 
 interface SearchPanelProps {
@@ -76,21 +78,32 @@ export default function SearchPanel({ searchResults, isSearching, onSearch, onAd
             className="flex items-center justify-between p-3 bg-gray-700/50 rounded-lg hover:bg-gray-700 transition-colors"
           >
             <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-gray-600 to-gray-700 rounded-lg flex items-center justify-center">
-                <i className="fas fa-play text-xs text-gray-300"></i>
+              <div className="w-12 h-12 rounded-lg overflow-hidden bg-gray-600 flex items-center justify-center">
+                {result.thumbnail ? (
+                  <img 
+                    src={result.thumbnail} 
+                    alt={result.title}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <i className="fas fa-music text-sm text-gray-300"></i>
+                )}
               </div>
-              <div>
-                <p className="font-medium text-white">{result.title}</p>
-                <p className="text-sm text-gray-400">{formatDuration(result.duration)}</p>
+              <div className="flex-1 min-w-0">
+                <p className="font-medium text-white text-sm line-clamp-2">{result.title}</p>
+                <div className="flex items-center space-x-2 mt-1">
+                  <p className="text-xs text-gray-400">{result.channel || 'Unknown'}</p>
+                  <div className="w-1 h-1 bg-gray-500 rounded-full"></div>
+                  <p className="text-xs text-gray-400">{formatDuration(result.duration)}</p>
+                </div>
               </div>
             </div>
             <Button
               onClick={() => onAddToQueue(result)}
-              variant="ghost"
-              size="icon"
-              className="p-2 text-gray-400 hover:text-primary"
+              className="ml-2 bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 text-sm"
             >
-              <i className="fas fa-plus"></i>
+              <i className="fas fa-plus mr-1"></i>
+              Add
             </Button>
           </div>
         ))}

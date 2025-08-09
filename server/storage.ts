@@ -26,7 +26,7 @@ export interface IStorage {
   
   // Queue methods
   getQueueByRoom(roomId: string): Promise<QueueItem[]>;
-  addToQueue(item: InsertQueueItem & { addedBy: string }): Promise<QueueItem>;
+  addToQueue(item: InsertQueueItem & { addedBy: string; thumbnail?: string; channel?: string }): Promise<QueueItem>;
   removeFromQueue(id: string): Promise<boolean>;
   clearQueue(roomId: string): Promise<boolean>;
   
@@ -119,7 +119,7 @@ export class MemStorage implements IStorage {
       .sort((a, b) => a.position - b.position);
   }
 
-  async addToQueue(item: InsertQueueItem & { addedBy: string }): Promise<QueueItem> {
+  async addToQueue(item: InsertQueueItem & { addedBy: string; thumbnail?: string; channel?: string }): Promise<QueueItem> {
     const id = randomUUID();
     const existingItems = await this.getQueueByRoom(item.roomId);
     const position = existingItems.length;
@@ -133,6 +133,8 @@ export class MemStorage implements IStorage {
       addedBy: item.addedBy,
       addedAt: new Date(),
       position,
+      thumbnail: item.thumbnail,
+      channel: item.channel,
     };
     
     this.queueItems.set(id, queueItem);

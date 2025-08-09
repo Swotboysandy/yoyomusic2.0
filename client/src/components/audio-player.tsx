@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
+import YouTubePlayer from "./youtube-player";
 
 interface Song {
   id: string;
@@ -7,6 +8,8 @@ interface Song {
   duration: number;
   addedBy: string;
   videoId: string;
+  thumbnail?: string;
+  channel?: string;
 }
 
 interface RoomUser {
@@ -24,6 +27,8 @@ interface AudioPlayerProps {
   onPlayPause: () => void;
   onVoteSkip: () => void;
   onSeek: (time: number) => void;
+  onTimeUpdate: (time: number) => void;
+  onSongEnded: () => void;
 }
 
 export default function AudioPlayer({
@@ -34,7 +39,9 @@ export default function AudioPlayer({
   roomUsers,
   onPlayPause,
   onVoteSkip,
-  onSeek
+  onSeek,
+  onTimeUpdate,
+  onSongEnded
 }: AudioPlayerProps) {
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
@@ -58,11 +65,20 @@ export default function AudioPlayer({
         <>
           {/* Current Song Display */}
           <div className="flex items-center space-x-4 mb-6">
-            <div className="w-20 h-20 bg-gradient-to-br from-primary to-secondary rounded-xl flex items-center justify-center">
-              <i className="fas fa-music text-2xl text-white"></i>
+            <div className="w-20 h-20 rounded-xl overflow-hidden bg-gray-700 flex items-center justify-center">
+              {currentSong.thumbnail ? (
+                <img 
+                  src={currentSong.thumbnail} 
+                  alt={currentSong.title}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <i className="fas fa-music text-2xl text-gray-400"></i>
+              )}
             </div>
             <div className="flex-1">
-              <h4 className="font-semibold text-lg text-white">{currentSong.title}</h4>
+              <h4 className="font-semibold text-lg text-white line-clamp-2">{currentSong.title}</h4>
+              <p className="text-sm text-gray-400 mt-1">{currentSong.channel || 'Unknown Channel'}</p>
               <div className="flex items-center space-x-2 mt-1">
                 <span className="text-xs text-gray-500">
                   Added by {roomUsers.find(u => u.userId === currentSong.addedBy)?.user?.username || 'Unknown'}
@@ -72,6 +88,17 @@ export default function AudioPlayer({
               </div>
             </div>
           </div>
+          
+          {/* YouTube Player (hidden) */}
+          <YouTubePlayer
+            videoId={currentSong.videoId}
+            isPlaying={isPlaying}
+            currentTime={currentTime}
+            onTimeUpdate={onTimeUpdate}
+            onPlay={() => {}}
+            onPause={() => {}}
+            onEnded={onSongEnded}
+          />
           
           {/* Audio Controls */}
           <div className="space-y-4">
