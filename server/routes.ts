@@ -3,7 +3,8 @@ import { createServer, type Server } from "http";
 import { WebSocketServer, WebSocket } from "ws";
 import { storage } from "./storage";
 import { insertRoomSchema } from "@shared/schema";
-import ytdlp from "yt-dlp-exec";
+// Removed import of yt-dlp-exec
+import { spawn } from "child_process";
 
 interface WebSocketMessage {
   type: string;
@@ -21,11 +22,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   const httpServer = createServer(app);
   const wss = new WebSocketServer({ server: httpServer, path: "/ws" });
 
-  // Store active connections
   const connections = new Map<string, ExtendedWebSocket>();
   const userSockets = new Map<string, string>(); // userId -> connectionId
 
-  // WebSocket connection handler
   wss.on("connection", (ws: ExtendedWebSocket) => {
     const connectionId = Math.random().toString(36).substring(2, 15);
     connections.set(connectionId, ws);
@@ -79,7 +78,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     });
   });
 
-  // Handler implementations (join, leave, chat, etc.)
+  // Handler implementations...
 
   async function handleJoinRoom(ws: ExtendedWebSocket, data: WebSocketMessage, connectionId: string) {
     const { roomId, userId } = data;
@@ -97,7 +96,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
     await storage.addUserToRoom(roomId, userId);
 
-    // Send current room state
     const [queue, roomUsers, chatMessages] = await Promise.all([
       storage.getQueueByRoom(roomId),
       storage.getRoomUsers(roomId),
@@ -116,7 +114,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }),
     );
 
-    // Notify other users
     broadcastToRoom(
       roomId,
       {
@@ -195,7 +192,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
       data: queue,
     });
 
-    // If no song is playing, start the first song
     const room = await storage.getRoom(ws.roomId);
     if (!room?.currentSong && queue.length > 0) {
       await playNextSong(ws.roomId);
@@ -359,7 +355,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
       currentTime: 0,
     });
 
-    // Clear skip votes for previous song
     await storage.clearSkipVotes(roomId, nextSong.id);
 
     const updatedQueue = await storage.getQueueByRoom(roomId);
@@ -391,33 +386,57 @@ export async function registerRoutes(app: Express): Promise<Server> {
   }
 
   async function searchYoutube(query: string): Promise<any[]> {
-    try {
-      const output = await ytdlp(`ytsearch5:${query}`, {
-        dumpSingleJson: false,
-        flatPlaylist: true,
-        quiet: true,
-        json: true,
+    return new Promise((resolve, reject) => {
+      const args = [
+        `ytsearch5:${query}`,
+        "--flat-playlist",
+        "--quiet",
+        "--dump-json",
+      ];
+
+      const ytProcess = spawn("yt-dlp", args);
+
+      let output = "";
+
+      ytProcess.stdout.on("data", (data) => {
+        output += data.toString();
       });
 
-      // output is a string containing multiple JSON lines, parse line by line
-      const lines = output.trim().split("\n").filter((line) => line);
-      const results = lines.map((line) => {
-        const data = JSON.parse(line);
-        return {
-          id: data.id,
-          title: data.title,
-          duration: data.duration || 0,
-          videoId: data.id,
-          thumbnail: data.thumbnails && data.thumbnails.length > 0 ? data.thumbnails[0].url : null,
-          channel: data.channel || data.uploader || "Unknown",
-        };
+      ytProcess.stderr.on("data", (data) => {
+        console.error("yt-dlp stderr:", data.toString());
       });
 
-      return results;
-    } catch (error) {
-      console.error("YouTube search error:", error);
-      throw new Error("Failed to search YouTube");
-    }
+      ytProcess.on("error", (err) => {
+        console.error("yt-dlp spawn error:", err);
+        reject(err);
+      });
+
+      ytProcess.on("close", (code) => {
+        if (code !== 0) {
+          return reject(new Error(`yt-dlp process exited with code ${code}`));
+        }
+        try {
+          const lines = output.trim().split("\n").filter(Boolean);
+          const results = lines.map((line) => {
+            const data = JSON.parse(line);
+            return {
+              id: data.id,
+              title: data.title,
+              duration: data.duration || 0,
+              videoId: data.id,
+              thumbnail:
+                data.thumbnails && data.thumbnails.length > 0
+                  ? data.thumbnails[0].url
+                  : null,
+              channel: data.channel || data.uploader || "Unknown",
+            };
+          });
+          resolve(results);
+        } catch (e) {
+          reject(e);
+        }
+      });
+    });
   }
 
   // REST API routes
