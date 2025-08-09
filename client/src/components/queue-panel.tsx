@@ -20,7 +20,7 @@ export default function QueuePanel({ queue }: QueuePanelProps) {
   };
 
   return (
-    <div className="bg-slate-900/60 backdrop-blur-xl rounded-3xl p-6 border border-slate-700/50 shadow-2xl shadow-purple-500/10">
+    <div className="bg-slate-900/60 backdrop-blur-xl rounded-3xl p-6 border border-slate-700/50 shadow-2xl shadow-orange-500/10">
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-lg font-bold text-white">Queue</h3>
         <span className="text-sm font-medium text-slate-400">{queue.length} songs</span>
@@ -36,7 +36,7 @@ export default function QueuePanel({ queue }: QueuePanelProps) {
         ) : (
           queue.map((song, index) => (
             <div key={song.id} className="flex items-center space-x-3 p-3 bg-slate-800/30 rounded-2xl border border-slate-700/30">
-              <div className="w-6 h-6 bg-gradient-to-br from-violet-600 to-purple-600 rounded text-xs flex items-center justify-center text-white font-bold shadow-lg">
+              <div className="w-6 h-6 bg-gradient-to-br from-orange-500 to-red-500 rounded text-xs flex items-center justify-center text-white font-bold shadow-lg">
                 {index + 1}
               </div>
               <div className="w-10 h-10 rounded-xl overflow-hidden bg-gradient-to-br from-slate-700 to-slate-600 flex items-center justify-center shadow-lg">

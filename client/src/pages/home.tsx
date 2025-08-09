@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
-import { useParams } from "wouter";
+import { useParams, useLocation } from "wouter";
 import RoomSelection from "@/components/room-selection";
 import MusicRoom from "@/components/music-room";
 import { useWebSocket } from "@/hooks/use-websocket";
+import { Button } from "@/components/ui/button";
 
 export default function Home() {
   const { id: roomId } = useParams();
+  const [, setLocation] = useLocation();
   const [currentUser, setCurrentUser] = useState<{ id: string; username: string } | null>(null);
   const [currentView, setCurrentView] = useState<'selection' | 'room'>('selection');
   const { socket, isConnected } = useWebSocket();
@@ -55,15 +57,23 @@ export default function Home() {
             
             <div className="flex items-center space-x-4">
               <div className="flex items-center space-x-3">
-                <div className={`w-2 h-2 rounded-full ${isConnected ? 'bg-emerald-400 animate-pulse shadow-emerald-400/50 shadow-lg' : 'bg-gray-500'}`}></div>
+                <div className={`w-2 h-2 rounded-full ${isConnected ? 'bg-orange-400 animate-pulse shadow-orange-400/50 shadow-lg' : 'bg-gray-500'}`}></div>
                 <span className="text-sm font-medium text-slate-200">{currentUser.username}</span>
               </div>
+              <Button
+                onClick={() => setLocation('/')}
+                variant="outline"
+                className="text-white border-slate-600 hover:bg-red-500/20 hover:border-red-500"
+              >
+                <i className="fas fa-sign-out-alt mr-2"></i>
+                Exit Room
+              </Button>
             </div>
           </div>
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pb-36">
         {currentView === 'selection' ? (
           <RoomSelection currentUser={currentUser} socket={socket} />
         ) : roomId ? (

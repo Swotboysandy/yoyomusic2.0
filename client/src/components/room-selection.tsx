@@ -118,7 +118,7 @@ export default function RoomSelection({ currentUser, socket }: RoomSelectionProp
       </div>
 
       {/* Create Room Section */}
-      <div className="bg-gray-800/80 rounded-2xl p-8 border border-gray-700">
+      <div className="bg-slate-900/60 backdrop-blur-xl rounded-3xl p-8 border border-slate-700/50 shadow-2xl shadow-orange-500/10">
         <h3 className="text-xl font-semibold mb-6 flex items-center text-white">
           <i className="fas fa-plus-circle text-primary mr-3"></i>
           Create New Room
@@ -132,7 +132,7 @@ export default function RoomSelection({ currentUser, socket }: RoomSelectionProp
               placeholder="My Awesome Music Room"
               value={roomName}
               onChange={(e) => setRoomName(e.target.value)}
-              className="bg-gray-700 border-gray-600 text-white placeholder-gray-400 focus:border-blue-500"
+              className="bg-slate-800/50 border-slate-600 text-white placeholder-slate-400 focus:border-orange-500 font-medium"
             />
           </div>
           <div>
@@ -143,14 +143,14 @@ export default function RoomSelection({ currentUser, socket }: RoomSelectionProp
               placeholder="Enter password"
               value={roomPassword}
               onChange={(e) => setRoomPassword(e.target.value)}
-              className="bg-gray-700 border-gray-600 text-white placeholder-gray-400 focus:border-blue-500"
+              className="bg-slate-800/50 border-slate-600 text-white placeholder-slate-400 focus:border-orange-500 font-medium"
             />
           </div>
         </div>
         
         <Button 
           onClick={handleCreateRoom}
-          className="mt-6 bg-gradient-to-r from-primary to-secondary hover:from-primary/80 hover:to-secondary/80 text-white font-medium"
+          className="mt-6 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-medium shadow-lg"
         >
           <i className="fas fa-door-open mr-2"></i>
           Create Room
@@ -170,28 +170,43 @@ export default function RoomSelection({ currentUser, socket }: RoomSelectionProp
             {rooms.map((room, index: number) => (
               <Card
                 key={room.id}
-                className="group bg-gray-800/90 border-gray-600 hover:border-blue-500/50 transition-all duration-300 cursor-pointer transform hover:-translate-y-1"
+                className="group bg-slate-800/60 backdrop-blur-xl border-slate-600/50 hover:border-orange-500/50 transition-all duration-300 cursor-pointer transform hover:-translate-y-1 shadow-xl"
                 onClick={() => handleRoomClick(room)}
               >
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between mb-4">
-                    <div className="w-12 h-12 bg-gradient-to-r from-primary to-secondary rounded-xl flex items-center justify-center text-xl font-bold text-white">
+                    <div className="w-12 h-12 bg-gradient-to-r from-orange-500 to-red-500 rounded-xl flex items-center justify-center text-xl font-bold text-white shadow-lg">
                       {String(index + 1).padStart(2, '0')}
                     </div>
-                    <div className="flex items-center space-x-1">
-                      <div className={`w-2 h-2 rounded-full ${room.userCount > 0 ? 'bg-primary' : 'bg-gray-500'}`}></div>
-                      <span className="text-xs text-gray-400">{room.userCount} users</span>
+                    <div className="flex items-center space-x-2">
+                      <div className={`w-2 h-2 rounded-full ${room.userCount > 0 ? 'bg-orange-400 animate-pulse shadow-orange-400/50 shadow-lg' : 'bg-gray-500'}`}></div>
+                      <span className="text-xs text-slate-400">{room.userCount} users</span>
+                      {room.hasPassword && (
+                        <div className="text-yellow-400">
+                          <i className="fas fa-lock text-sm"></i>
+                        </div>
+                      )}
                     </div>
                   </div>
-                  <h4 className="font-semibold text-lg mb-2 text-white">{room.name}</h4>
-                  <p className="text-gray-400 text-sm mb-4">
-                    {room.currentSong ? `Currently playing: "${room.currentSong.title}"` : "No music playing"}
-                  </p>
-                  <div className="flex items-center justify-between">
-                    <div className="text-gray-500 text-sm">
-                      {room.userCount === 0 ? "Ready to jam" : `${room.userCount} listening`}
+                  <h4 className="font-semibold text-lg mb-2 text-white group-hover:text-orange-400 transition-colors">{room.name}</h4>
+                  <div className="flex items-center space-x-2 mb-3">
+                    <span className="text-xs px-2 py-1 bg-orange-500/20 text-orange-400 rounded-full font-mono">
+                      #{room.id.slice(-6).toUpperCase()}
+                    </span>
+                  </div>
+                  {room.currentSong ? (
+                    <div className="p-3 bg-slate-700/50 rounded-lg border border-slate-600/30 mb-4">
+                      <p className="text-xs text-slate-400 mb-1">Currently playing:</p>
+                      <p className="text-white font-medium text-sm line-clamp-1">{room.currentSong.title}</p>
                     </div>
-                    <i className={`fas ${room.hasPassword ? 'fa-lock text-gray-600' : 'fa-unlock text-primary'}`}></i>
+                  ) : (
+                    <p className="text-slate-400 text-sm mb-4">No music playing - ready to jam!</p>
+                  )}
+                  <div className="flex items-center justify-between">
+                    <div className="text-slate-500 text-sm">
+                      {room.userCount === 0 ? "Join first!" : `${room.userCount} listening`}
+                    </div>
+                    <i className="fas fa-arrow-right text-orange-400 group-hover:translate-x-1 transition-transform"></i>
                   </div>
                 </CardContent>
               </Card>

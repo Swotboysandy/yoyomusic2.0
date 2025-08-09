@@ -220,42 +220,49 @@ export default function MusicRoom({ roomId, currentUser, socket }: MusicRoomProp
   };
 
   return (
-    <div className="grid lg:grid-cols-3 gap-6">
-      {/* Main Music Player */}
-      <div className="lg:col-span-2 space-y-6">
-        <AudioPlayer
-          currentSong={currentSong}
-          isPlaying={isPlaying}
-          currentTime={currentTime}
-          skipVotes={skipVotes}
-          roomUsers={roomUsers}
-          onPlayPause={handlePlayPause}
-          onVoteSkip={handleVoteSkip}
-          onSeek={handleSeek}
-          onTimeUpdate={handleTimeUpdate}
-          onSongEnded={handleSongEnded}
-        />
+    <>
+      <div className="grid lg:grid-cols-2 gap-8 pb-36">
+        {/* Left Panel */}
+        <div className="space-y-6">
+          <QueuePanel queue={queue} />
+          <ChatPanel
+            messages={chatMessages}
+            currentUser={currentUser}
+            typingUsers={typingUsers}
+            onSendMessage={handleSendMessage}
+            onTyping={handleTyping}
+          />
+          <UsersPanel users={roomUsers} />
+        </div>
         
-        <SearchPanel
-          searchResults={searchResults}
-          isSearching={isSearching}
-          onSearch={handleSearch}
-          onAddToQueue={handleAddToQueue}
-        />
+        {/* Right Panel */}
+        <div className="space-y-6">
+          <SearchPanel
+            searchResults={searchResults}
+            isSearching={isSearching}
+            onSearch={handleSearch}
+            onAddToQueue={handleAddToQueue}
+          />
+        </div>
       </div>
       
-      {/* Sidebar Content */}
-      <div className="space-y-6">
-        <QueuePanel queue={queue} />
-        <ChatPanel
-          messages={chatMessages}
-          currentUser={currentUser}
-          typingUsers={typingUsers}
-          onSendMessage={handleSendMessage}
-          onTyping={handleTyping}
-        />
-        <UsersPanel users={roomUsers} />
+      {/* Bottom Docked Player */}
+      <div className="fixed bottom-0 left-0 right-0 bg-slate-900/95 backdrop-blur-xl border-t border-slate-700/50 p-4 z-50 shadow-2xl">
+        <div className="max-w-7xl mx-auto">
+          <AudioPlayer
+            currentSong={currentSong}
+            isPlaying={isPlaying}
+            currentTime={currentTime}
+            skipVotes={skipVotes}
+            roomUsers={roomUsers}
+            onPlayPause={handlePlayPause}
+            onVoteSkip={handleVoteSkip}
+            onSeek={handleSeek}
+            onTimeUpdate={handleTimeUpdate}
+            onSongEnded={handleSongEnded}
+          />
+        </div>
       </div>
-    </div>
+    </>
   );
 }

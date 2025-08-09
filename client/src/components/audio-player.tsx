@@ -52,9 +52,9 @@ export default function AudioPlayer({
   const progress = currentSong ? (currentTime / currentSong.duration) * 100 : 0;
 
   return (
-    <div className="bg-slate-900/60 backdrop-blur-xl rounded-3xl p-8 border border-slate-700/50 shadow-2xl shadow-purple-500/10">
-      <div className="flex items-center justify-between mb-6">
-        <h3 className="text-xl font-bold text-white">Now Playing</h3>
+    <div className="bg-slate-900/60 backdrop-blur-xl rounded-2xl p-4 border border-slate-700/50 shadow-2xl shadow-orange-500/10">
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-lg font-bold text-white">Now Playing</h3>
         <div className="flex items-center space-x-2">
           <i className="fas fa-users text-slate-300"></i>
           <span className="text-sm font-medium text-slate-400">{roomUsers.length} listeners</span>
@@ -64,7 +64,7 @@ export default function AudioPlayer({
       {currentSong ? (
         <>
           {/* Current Song Display */}
-          <div className="flex items-center space-x-4 mb-6">
+          <div className="flex items-center space-x-4 mb-4">
             <div className="w-20 h-20 rounded-2xl overflow-hidden bg-gradient-to-br from-slate-800 to-slate-700 flex items-center justify-center shadow-lg">
               {currentSong.thumbnail ? (
                 <img 
@@ -146,7 +146,7 @@ export default function AudioPlayer({
                 onClick={onVoteSkip}
                 variant="ghost"
                 size="icon"
-                className="p-3 text-white hover:text-red-400 flex items-center space-x-1"
+                className="p-3 text-white hover:text-orange-400 hover:bg-orange-500/20 rounded-full transition-all duration-300 flex items-center space-x-1"
               >
                 <i className="fas fa-forward text-xl text-white"></i>
                 <span className="text-xs">{skipVotes.votes}/{skipVotes.required}</span>

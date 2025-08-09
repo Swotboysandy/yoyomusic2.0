@@ -40,7 +40,7 @@ export default function SearchPanel({ searchResults, isSearching, onSearch, onAd
   };
 
   return (
-    <div className="bg-slate-900/60 backdrop-blur-xl rounded-3xl p-6 border border-slate-700/50 shadow-2xl shadow-purple-500/10">
+    <div className="bg-slate-900/60 backdrop-blur-xl rounded-3xl p-6 border border-slate-700/50 shadow-2xl shadow-orange-500/10">
       <h3 className="text-lg font-bold mb-4 text-white">Add Music</h3>
       
       <div className="flex space-x-3 mb-4">
@@ -49,12 +49,12 @@ export default function SearchPanel({ searchResults, isSearching, onSearch, onAd
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           onKeyPress={handleKeyPress}
-          className="flex-1 bg-slate-800/50 border-slate-600 text-white placeholder-slate-400 focus:border-violet-500 font-medium"
+          className="flex-1 bg-slate-800/50 border-slate-600 text-white placeholder-slate-400 focus:border-orange-500 font-medium"
         />
         <Button
           onClick={handleSearch}
           disabled={isSearching}
-          className="px-6 bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 text-white shadow-lg font-medium"
+          className="px-6 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white shadow-lg font-medium"
         >
           {isSearching ? (
             <i className="fas fa-spinner fa-spin"></i>
@@ -100,7 +100,7 @@ export default function SearchPanel({ searchResults, isSearching, onSearch, onAd
             </div>
             <Button
               onClick={() => onAddToQueue(result)}
-              className="ml-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white px-3 py-1 text-sm font-medium shadow-lg"
+              className="ml-2 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white px-3 py-1 text-sm font-medium shadow-lg"
             >
               <i className="fas fa-plus mr-1"></i>
               Add
