@@ -59,7 +59,7 @@ export default function Home() {
                   <i className="fas fa-music text-white text-sm"></i>
                 </div>
                 <h1 className="text-xl font-bold bg-gradient-to-r from-violet-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-                  SyncTunes
+                  YoYoMusic 2.0
                 </h1>
               </div>
             </div>
