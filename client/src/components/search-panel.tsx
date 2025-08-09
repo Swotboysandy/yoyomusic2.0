@@ -86,7 +86,7 @@ export default function SearchPanel({ searchResults, isSearching, onSearch, onAd
                     className="w-full h-full object-cover"
                   />
                 ) : (
-                  <i className="fas fa-music text-sm text-gray-300"></i>
+                  <i className="fas fa-music text-sm text-white"></i>
                 )}
               </div>
               <div className="flex-1 min-w-0">

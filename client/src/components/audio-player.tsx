@@ -56,7 +56,7 @@ export default function AudioPlayer({
       <div className="flex items-center justify-between mb-6">
         <h3 className="text-xl font-bold text-white">Now Playing</h3>
         <div className="flex items-center space-x-2">
-          <i className="fas fa-users text-gray-400"></i>
+          <i className="fas fa-users text-slate-300"></i>
           <span className="text-sm font-medium text-slate-400">{roomUsers.length} listeners</span>
         </div>
       </div>
@@ -73,7 +73,7 @@ export default function AudioPlayer({
                   className="w-full h-full object-cover"
                 />
               ) : (
-                <i className="fas fa-music text-2xl text-gray-400"></i>
+                <i className="fas fa-music text-2xl text-white"></i>
               )}
             </div>
             <div className="flex-1">
@@ -104,7 +104,7 @@ export default function AudioPlayer({
           <div className="space-y-4">
             {/* Progress Bar */}
             <div className="space-y-2">
-              <div className="flex justify-between text-xs text-gray-400">
+              <div className="flex justify-between text-xs text-slate-400">
                 <span>{formatTime(currentTime)}</span>
                 <span>{formatTime(currentSong.duration)}</span>
               </div>
@@ -122,9 +122,9 @@ export default function AudioPlayer({
               <Button
                 variant="ghost"
                 size="icon"
-                className="p-3 text-gray-400 hover:text-white"
+                className="p-3 text-white hover:text-slate-200"
               >
-                <i className="fas fa-step-backward text-xl"></i>
+                <i className="fas fa-step-backward text-xl text-white"></i>
               </Button>
               
               <Button
@@ -137,18 +137,18 @@ export default function AudioPlayer({
               <Button
                 variant="ghost"
                 size="icon"
-                className="p-3 text-gray-400 hover:text-white"
+                className="p-3 text-white hover:text-slate-200"
               >
-                <i className="fas fa-step-forward text-xl"></i>
+                <i className="fas fa-step-forward text-xl text-white"></i>
               </Button>
               
               <Button
                 onClick={onVoteSkip}
                 variant="ghost"
                 size="icon"
-                className="p-3 text-gray-400 hover:text-red-400 flex items-center space-x-1"
+                className="p-3 text-white hover:text-red-400 flex items-center space-x-1"
               >
-                <i className="fas fa-forward text-xl"></i>
+                <i className="fas fa-forward text-xl text-white"></i>
                 <span className="text-xs">{skipVotes.votes}/{skipVotes.required}</span>
               </Button>
             </div>
@@ -156,11 +156,11 @@ export default function AudioPlayer({
         </>
       ) : (
         <div className="text-center py-12">
-          <div className="w-20 h-20 bg-gray-700 rounded-xl flex items-center justify-center mx-auto mb-4">
-            <i className="fas fa-music text-2xl text-gray-400"></i>
+          <div className="w-20 h-20 bg-gradient-to-br from-slate-700 to-slate-600 rounded-xl flex items-center justify-center mx-auto mb-4 shadow-lg">
+            <i className="fas fa-music text-2xl text-white"></i>
           </div>
-          <p className="text-gray-400">No song is currently playing</p>
-          <p className="text-sm text-gray-500 mt-1">Add songs to the queue to get started</p>
+          <p className="text-slate-300">No song is currently playing</p>
+          <p className="text-sm text-slate-400 mt-1">Add songs to the queue to get started</p>
         </div>
       )}
     </div>

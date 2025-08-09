@@ -119,6 +119,12 @@
     min-height: 100vh;
   }
   
+  /* Ensure icons are always visible */
+  .fas, .fa, i[class*="fa-"] {
+    color: inherit !important;
+    opacity: 1 !important;
+  }
+  
   /* Line clamp utilities */
   .line-clamp-1 {
     overflow: hidden;
