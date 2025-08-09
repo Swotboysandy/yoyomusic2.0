@@ -1,5 +1,5 @@
 # Use Node.js 18 base image with Debian Bullseye
-FROM node:18-bullseye
+FROM node:20-bullseye
 
 # Install system dependencies: ffmpeg, python3, pip3
 RUN apt-get update && apt-get install -y ffmpeg python3 python3-pip
