@@ -29,8 +29,8 @@ export default function UsersPanel({ users }: UsersPanelProps) {
   };
 
   return (
-    <div className="bg-gray-800/90 rounded-2xl p-6 border border-gray-700">
-      <h3 className="text-lg font-semibold mb-4 text-white">Listeners</h3>
+    <div className="bg-slate-900/60 backdrop-blur-xl rounded-3xl p-6 border border-slate-700/50 shadow-2xl shadow-purple-500/10">
+      <h3 className="text-lg font-bold mb-4 text-white">Listeners</h3>
       
       <div className="space-y-3">
         {users.length === 0 ? (

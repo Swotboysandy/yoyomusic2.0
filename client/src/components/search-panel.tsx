@@ -40,8 +40,8 @@ export default function SearchPanel({ searchResults, isSearching, onSearch, onAd
   };
 
   return (
-    <div className="bg-gray-800/90 rounded-2xl p-6 border border-gray-700">
-      <h3 className="text-lg font-semibold mb-4 text-white">Add Music</h3>
+    <div className="bg-slate-900/60 backdrop-blur-xl rounded-3xl p-6 border border-slate-700/50 shadow-2xl shadow-purple-500/10">
+      <h3 className="text-lg font-bold mb-4 text-white">Add Music</h3>
       
       <div className="flex space-x-3 mb-4">
         <Input
@@ -49,12 +49,12 @@ export default function SearchPanel({ searchResults, isSearching, onSearch, onAd
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           onKeyPress={handleKeyPress}
-          className="flex-1 bg-gray-700 border-gray-600 text-white placeholder-gray-400 focus:border-blue-500"
+          className="flex-1 bg-slate-800/50 border-slate-600 text-white placeholder-slate-400 focus:border-violet-500 font-medium"
         />
         <Button
           onClick={handleSearch}
           disabled={isSearching}
-          className="bg-gradient-to-r from-primary to-secondary hover:from-primary/80 hover:to-secondary/80 text-white"
+          className="px-6 bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 text-white shadow-lg font-medium"
         >
           {isSearching ? (
             <i className="fas fa-spinner fa-spin"></i>
@@ -75,10 +75,10 @@ export default function SearchPanel({ searchResults, isSearching, onSearch, onAd
         {searchResults.map((result) => (
           <div
             key={result.id}
-            className="flex items-center justify-between p-3 bg-gray-700/50 rounded-lg hover:bg-gray-700 transition-colors"
+            className="flex items-center justify-between p-3 bg-slate-800/30 rounded-2xl hover:bg-slate-800/50 transition-all duration-300 border border-slate-700/30"
           >
             <div className="flex items-center space-x-3">
-              <div className="w-12 h-12 rounded-lg overflow-hidden bg-gray-600 flex items-center justify-center">
+              <div className="w-12 h-12 rounded-xl overflow-hidden bg-gradient-to-br from-slate-700 to-slate-600 flex items-center justify-center shadow-lg">
                 {result.thumbnail ? (
                   <img 
                     src={result.thumbnail} 
@@ -90,17 +90,17 @@ export default function SearchPanel({ searchResults, isSearching, onSearch, onAd
                 )}
               </div>
               <div className="flex-1 min-w-0">
-                <p className="font-medium text-white text-sm line-clamp-2">{result.title}</p>
+                <p className="font-semibold text-white text-sm line-clamp-2">{result.title}</p>
                 <div className="flex items-center space-x-2 mt-1">
-                  <p className="text-xs text-gray-400">{result.channel || 'Unknown'}</p>
-                  <div className="w-1 h-1 bg-gray-500 rounded-full"></div>
-                  <p className="text-xs text-gray-400">{formatDuration(result.duration)}</p>
+                  <p className="text-xs font-medium text-slate-400">{result.channel || 'Unknown'}</p>
+                  <div className="w-1 h-1 bg-slate-500 rounded-full"></div>
+                  <p className="text-xs text-slate-400">{formatDuration(result.duration)}</p>
                 </div>
               </div>
             </div>
             <Button
               onClick={() => onAddToQueue(result)}
-              className="ml-2 bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 text-sm"
+              className="ml-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white px-3 py-1 text-sm font-medium shadow-lg"
             >
               <i className="fas fa-plus mr-1"></i>
               Add

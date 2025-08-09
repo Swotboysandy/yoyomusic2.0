@@ -133,8 +133,8 @@ export class MemStorage implements IStorage {
       addedBy: item.addedBy,
       addedAt: new Date(),
       position,
-      thumbnail: item.thumbnail,
-      channel: item.channel,
+      thumbnail: item.thumbnail || null,
+      channel: item.channel || null,
     };
     
     this.queueItems.set(id, queueItem);

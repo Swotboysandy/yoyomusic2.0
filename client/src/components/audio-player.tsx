@@ -52,12 +52,12 @@ export default function AudioPlayer({
   const progress = currentSong ? (currentTime / currentSong.duration) * 100 : 0;
 
   return (
-    <div className="bg-gray-800/90 rounded-2xl p-8 border border-gray-700">
+    <div className="bg-slate-900/60 backdrop-blur-xl rounded-3xl p-8 border border-slate-700/50 shadow-2xl shadow-purple-500/10">
       <div className="flex items-center justify-between mb-6">
-        <h3 className="text-xl font-semibold text-white">Now Playing</h3>
+        <h3 className="text-xl font-bold text-white">Now Playing</h3>
         <div className="flex items-center space-x-2">
           <i className="fas fa-users text-gray-400"></i>
-          <span className="text-sm text-gray-400">{roomUsers.length} listeners</span>
+          <span className="text-sm font-medium text-slate-400">{roomUsers.length} listeners</span>
         </div>
       </div>
       
@@ -65,7 +65,7 @@ export default function AudioPlayer({
         <>
           {/* Current Song Display */}
           <div className="flex items-center space-x-4 mb-6">
-            <div className="w-20 h-20 rounded-xl overflow-hidden bg-gray-700 flex items-center justify-center">
+            <div className="w-20 h-20 rounded-2xl overflow-hidden bg-gradient-to-br from-slate-800 to-slate-700 flex items-center justify-center shadow-lg">
               {currentSong.thumbnail ? (
                 <img 
                   src={currentSong.thumbnail} 
@@ -77,8 +77,8 @@ export default function AudioPlayer({
               )}
             </div>
             <div className="flex-1">
-              <h4 className="font-semibold text-lg text-white line-clamp-2">{currentSong.title}</h4>
-              <p className="text-sm text-gray-400 mt-1">{currentSong.channel || 'Unknown Channel'}</p>
+              <h4 className="font-bold text-lg text-white line-clamp-2">{currentSong.title}</h4>
+              <p className="text-sm font-medium text-slate-400 mt-1">{currentSong.channel || 'Unknown Channel'}</p>
               <div className="flex items-center space-x-2 mt-1">
                 <span className="text-xs text-gray-500">
                   Added by {roomUsers.find(u => u.userId === currentSong.addedBy)?.user?.username || 'Unknown'}
@@ -129,7 +129,7 @@ export default function AudioPlayer({
               
               <Button
                 onClick={onPlayPause}
-                className="p-4 bg-blue-600 hover:bg-blue-700 rounded-full text-white shadow-lg transform hover:scale-105 transition-all"
+                className="p-4 bg-gradient-to-r from-violet-600 via-purple-600 to-pink-600 hover:from-violet-700 hover:via-purple-700 hover:to-pink-700 rounded-full text-white shadow-2xl shadow-purple-500/30 transform hover:scale-110 transition-all duration-300"
               >
                 <i className={`fas ${isPlaying ? 'fa-pause' : 'fa-play'} text-xl`}></i>
               </Button>

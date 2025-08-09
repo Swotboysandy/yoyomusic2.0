@@ -95,8 +95,8 @@ export default function ChatPanel({
   };
 
   return (
-    <div className="bg-gray-800/90 rounded-2xl p-6 border border-gray-700">
-      <h3 className="text-lg font-semibold mb-4 text-white">Room Chat</h3>
+    <div className="bg-slate-900/60 backdrop-blur-xl rounded-3xl p-6 border border-slate-700/50 shadow-2xl shadow-purple-500/10">
+      <h3 className="text-lg font-bold mb-4 text-white">Room Chat</h3>
       
       {/* Chat Messages */}
       <div className="space-y-3 max-h-60 overflow-y-auto mb-4">
@@ -145,12 +145,12 @@ export default function ChatPanel({
             handleTyping();
           }}
           onKeyPress={handleKeyPress}
-          className="flex-1 bg-gray-700 border-gray-600 text-white placeholder-gray-400 text-sm focus:border-blue-500"
+          className="flex-1 bg-slate-800/50 border-slate-600 text-white placeholder-slate-400 text-sm focus:border-violet-500 font-medium"
         />
         <Button
           onClick={handleSendMessage}
           size="icon"
-          className="bg-primary text-white hover:bg-primary/80"
+          className="bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 text-white shadow-lg"
         >
           <i className="fas fa-paper-plane text-sm"></i>
         </Button>

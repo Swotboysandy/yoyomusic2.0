@@ -30,33 +30,33 @@ export default function Home() {
 
   if (!currentUser) {
     return (
-      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
-        <div className="text-white">Loading...</div>
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-white font-medium">Loading...</div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-900">
+    <div className="min-h-screen relative">
       {/* Navigation Header */}
-      <header className="bg-gray-800/80 backdrop-blur-xl border-b border-gray-700 sticky top-0 z-50">
+      <header className="bg-slate-900/60 backdrop-blur-xl border-b border-slate-700/50 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center space-x-4">
               <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-gradient-to-r from-primary to-secondary rounded-lg flex items-center justify-center">
+                <div className="w-8 h-8 bg-gradient-to-r from-violet-500 via-purple-500 to-pink-500 rounded-lg flex items-center justify-center shadow-lg">
                   <i className="fas fa-music text-white text-sm"></i>
                 </div>
-                <h1 className="text-xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                <h1 className="text-xl font-bold bg-gradient-to-r from-violet-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
                   SyncTunes
                 </h1>
               </div>
             </div>
             
             <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-2">
-                <div className={`w-2 h-2 rounded-full ${isConnected ? 'bg-primary animate-pulse' : 'bg-gray-500'}`}></div>
-                <span className="text-sm text-gray-300">{currentUser.username}</span>
+              <div className="flex items-center space-x-3">
+                <div className={`w-2 h-2 rounded-full ${isConnected ? 'bg-emerald-400 animate-pulse shadow-emerald-400/50 shadow-lg' : 'bg-gray-500'}`}></div>
+                <span className="text-sm font-medium text-slate-200">{currentUser.username}</span>
               </div>
             </div>
           </div>
