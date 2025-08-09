@@ -89,6 +89,29 @@ export default function AudioPlayer({
             onEnded={onSongEnded}
           />
 
+          {/* Progress Bar */}
+          <div className="flex-1 mx-4">
+            <div className="flex items-center justify-between text-xs text-slate-400 mb-1">
+              <span>{formatTime(currentTime)}</span>
+              <span>{formatTime(currentSong.duration)}</span>
+            </div>
+            <div 
+              className="w-full bg-slate-700/50 rounded-full h-1 cursor-pointer"
+              onClick={(e) => {
+                const rect = e.currentTarget.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const percentage = x / rect.width;
+                const newTime = percentage * currentSong.duration;
+                onSeek(newTime);
+              }}
+            >
+              <div 
+                className="bg-gradient-to-r from-orange-500 to-red-500 h-1 rounded-full transition-all duration-300"
+                style={{ width: `${(currentTime / currentSong.duration) * 100}%` }}
+              ></div>
+            </div>
+          </div>
+
           {/* Audio Controls */}
           <div className="flex items-center space-x-2">
             <Button
@@ -100,20 +123,18 @@ export default function AudioPlayer({
               <i className={`fas ${isPlaying ? 'fa-pause' : 'fa-play'} text-xs`}></i>
             </Button>
             
-            {skipVotes.votes < skipVotes.required && (
-              <Button
-                onClick={onVoteSkip}
-                variant="ghost"
-                size="icon"
-                className="w-8 h-8 text-white hover:text-orange-400 hover:bg-orange-500/20 rounded-full"
-              >
+            <Button
+              onClick={onVoteSkip}
+              variant="ghost"
+              size="icon"
+              className="w-8 h-8 text-white hover:text-orange-400 hover:bg-orange-500/20 rounded-full flex items-center justify-center"
+              title={`Skip (${skipVotes.votes}/${skipVotes.required} votes)`}
+            >
+              <div className="flex items-center space-x-1">
                 <i className="fas fa-forward text-xs"></i>
-              </Button>
-            )}
-            
-            <div className="text-xs text-slate-400 min-w-0">
-              {formatTime(currentTime)} / {formatTime(currentSong.duration)}
-            </div>
+                <span className="text-xs">{skipVotes.votes}/{skipVotes.required}</span>
+              </div>
+            </Button>
           </div>
         </>
       ) : (

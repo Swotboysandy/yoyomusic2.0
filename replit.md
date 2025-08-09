@@ -21,6 +21,11 @@ Preferred communication style: Simple, everyday language.
 ✓ Added room numbers display with glass-morphism effects
 ✓ Updated color scheme from green/purple to orange/blue gradient theme
 ✓ Improved room cards with password protection indicators
+✓ Created compact Spotify-style bottom player dock
+✓ Added clickable progress bar for song seeking
+✓ Always visible skip button with vote counter
+✓ Custom username input instead of auto-generated names
+✓ Exit room button only shows when in a room
 
 # System Architecture
 
