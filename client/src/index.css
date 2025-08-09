@@ -106,4 +106,13 @@
   body {
     @apply font-sans antialiased bg-background text-foreground;
   }
+  
+  /* Force dark mode for better visibility */
+  html {
+    @apply dark;
+  }
+  
+  body {
+    @apply bg-gray-900 text-white;
+  }
 }

@@ -6,6 +6,15 @@ This is a collaborative music streaming application built with React, Express, a
 
 Preferred communication style: Simple, everyday language.
 
+# Recent Changes (August 9, 2025)
+
+✓ Fixed yt-dlp dependency installation and updated command syntax
+✓ Resolved all TypeScript compatibility errors across components  
+✓ Improved UI visibility with proper dark mode styling using gray-800/900 backgrounds
+✓ Enhanced form controls with better focus states and contrast
+✓ Verified music search functionality working with YouTube via yt-dlp
+✓ Updated audio player controls with improved visual feedback
+
 # System Architecture
 
 ## Frontend Architecture

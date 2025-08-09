@@ -38,7 +38,7 @@ export default function SearchPanel({ searchResults, isSearching, onSearch, onAd
   };
 
   return (
-    <div className="bg-gradient-to-br from-dark-200 to-dark-100 rounded-2xl p-6 border border-gray-800/50">
+    <div className="bg-gray-800/90 rounded-2xl p-6 border border-gray-700">
       <h3 className="text-lg font-semibold mb-4 text-white">Add Music</h3>
       
       <div className="flex space-x-3 mb-4">
@@ -47,7 +47,7 @@ export default function SearchPanel({ searchResults, isSearching, onSearch, onAd
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           onKeyPress={handleKeyPress}
-          className="flex-1 bg-dark-300 border-gray-700 text-white placeholder-gray-400"
+          className="flex-1 bg-gray-700 border-gray-600 text-white placeholder-gray-400 focus:border-blue-500"
         />
         <Button
           onClick={handleSearch}
@@ -73,7 +73,7 @@ export default function SearchPanel({ searchResults, isSearching, onSearch, onAd
         {searchResults.map((result) => (
           <div
             key={result.id}
-            className="flex items-center justify-between p-3 bg-dark-300/50 rounded-lg hover:bg-dark-300 transition-colors"
+            className="flex items-center justify-between p-3 bg-gray-700/50 rounded-lg hover:bg-gray-700 transition-colors"
           >
             <div className="flex items-center space-x-3">
               <div className="w-10 h-10 bg-gradient-to-br from-gray-600 to-gray-700 rounded-lg flex items-center justify-center">

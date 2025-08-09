@@ -359,7 +359,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     return new Promise((resolve, reject) => {
       const ytdlp = spawn('yt-dlp', [
         '--quiet',
-        '--extract-flat',
+        '--flat-playlist',
         '--dump-json',
         `ytsearch5:${query}`
       ]);

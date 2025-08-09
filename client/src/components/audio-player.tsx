@@ -45,7 +45,7 @@ export default function AudioPlayer({
   const progress = currentSong ? (currentTime / currentSong.duration) * 100 : 0;
 
   return (
-    <div className="bg-gradient-to-br from-dark-200 to-dark-100 rounded-2xl p-8 border border-gray-800/50">
+    <div className="bg-gray-800/90 rounded-2xl p-8 border border-gray-700">
       <div className="flex items-center justify-between mb-6">
         <h3 className="text-xl font-semibold text-white">Now Playing</h3>
         <div className="flex items-center space-x-2">
@@ -102,7 +102,7 @@ export default function AudioPlayer({
               
               <Button
                 onClick={onPlayPause}
-                className="p-4 bg-gradient-to-r from-primary to-secondary rounded-full text-white hover:from-primary/80 hover:to-secondary/80"
+                className="p-4 bg-blue-600 hover:bg-blue-700 rounded-full text-white shadow-lg transform hover:scale-105 transition-all"
               >
                 <i className={`fas ${isPlaying ? 'fa-pause' : 'fa-play'} text-xl`}></i>
               </Button>

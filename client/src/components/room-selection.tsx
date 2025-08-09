@@ -118,7 +118,7 @@ export default function RoomSelection({ currentUser, socket }: RoomSelectionProp
       </div>
 
       {/* Create Room Section */}
-      <div className="bg-gradient-to-r from-dark-200 to-dark-100 rounded-2xl p-8 border border-gray-800/50">
+      <div className="bg-gray-800/80 rounded-2xl p-8 border border-gray-700">
         <h3 className="text-xl font-semibold mb-6 flex items-center text-white">
           <i className="fas fa-plus-circle text-primary mr-3"></i>
           Create New Room
@@ -132,7 +132,7 @@ export default function RoomSelection({ currentUser, socket }: RoomSelectionProp
               placeholder="My Awesome Music Room"
               value={roomName}
               onChange={(e) => setRoomName(e.target.value)}
-              className="bg-dark-300 border-gray-700 text-white placeholder-gray-400"
+              className="bg-gray-700 border-gray-600 text-white placeholder-gray-400 focus:border-blue-500"
             />
           </div>
           <div>
@@ -143,7 +143,7 @@ export default function RoomSelection({ currentUser, socket }: RoomSelectionProp
               placeholder="Enter password"
               value={roomPassword}
               onChange={(e) => setRoomPassword(e.target.value)}
-              className="bg-dark-300 border-gray-700 text-white placeholder-gray-400"
+              className="bg-gray-700 border-gray-600 text-white placeholder-gray-400 focus:border-blue-500"
             />
           </div>
         </div>
@@ -170,7 +170,7 @@ export default function RoomSelection({ currentUser, socket }: RoomSelectionProp
             {rooms.map((room, index: number) => (
               <Card
                 key={room.id}
-                className="group bg-gradient-to-br from-dark-200 to-dark-100 border-gray-800/50 hover:border-primary/30 transition-all duration-300 cursor-pointer transform hover:-translate-y-1"
+                className="group bg-gray-800/90 border-gray-600 hover:border-blue-500/50 transition-all duration-300 cursor-pointer transform hover:-translate-y-1"
                 onClick={() => handleRoomClick(room)}
               >
                 <CardContent className="p-6">

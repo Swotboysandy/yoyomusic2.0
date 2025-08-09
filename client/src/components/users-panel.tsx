@@ -29,7 +29,7 @@ export default function UsersPanel({ users }: UsersPanelProps) {
   };
 
   return (
-    <div className="bg-gradient-to-br from-dark-200 to-dark-100 rounded-2xl p-6 border border-gray-800/50">
+    <div className="bg-gray-800/90 rounded-2xl p-6 border border-gray-700">
       <h3 className="text-lg font-semibold mb-4 text-white">Listeners</h3>
       
       <div className="space-y-3">
