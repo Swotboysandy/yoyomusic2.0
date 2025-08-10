@@ -11,6 +11,15 @@ import {
   type SkipVote
 } from "@shared/schema";
 import { randomUUID } from "crypto";
+import { drizzle } from "drizzle-orm/node-postgres";
+import pg from "pg";
+
+const pool = new pg.Pool({
+  connectionString: process.env.DATABASE_URL,
+});
+
+// Export the Drizzle database connection
+export const db = drizzle(pool);
 
 export interface IStorage {
   // User methods
